@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><title>jis.ui Summary</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'jis.ui package - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?jis/ui/package-detail.html&amp;jis/ui/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">jis.ui</td><td class="titleTableSubNav" id="subNav" align="right"><a href="package-detail.html#interfaceSummary"> Interfaces </a>&nbsp;| <a href="package-detail.html#classSummary">Classes</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("jis.ui"); titleBar_setSubNav(false,false,false,false,false,false,false,false,false,false,false	,false,false,true,true,false);}	
+				-->
+			</script><div class="MainContent"><br><br><hr><a name="interfaceSummary"></a><div class="summaryTableTitle">Interfaces</div><table cellpadding="3" cellspacing="0" class="summaryTable"><tr><th>&nbsp;</th><th width="30%">Interface</th><th width="70%">Description</th></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><i><a href="JISISpriteManager.html">JISISpriteManager</a></i></td><td class="summaryTableLastCol">
+	 管理UI接口
+	 通常情况下从swf中获取的显示对象是美术人员制作好的一整个UI，我们需要通过引用的方式来管理这些UI中零散的显示组件，
+	 实现该接口的对象会由JISManagerSpriteUtil调用setCurrDisplay的方式设置一个显示对象，
+	 如果你需要的只是简单的引用请不要addChild。
+	 设置引用采用的为递归的方式，只要成员是实现该接口的类，就可以无限递归
+	 规则：
+	 1.子类属性名必须是public类型
+	 2.子类属性名必须与显示对象name相同
+	 3.如果不是系统组件的话需要在构造函数中new出来
+	 示例:
+	 public var _Text:TextField;
+	 public var _Btn:JISButton;
+	 
+	 public function test()
+	 {
+	 	   _Btn = new JISButton();
+	 }
+	 对应swf的display
+	 display.getChildByName("_Text")为TextField
+	 display.getChildByName("_Btn")为SwfMovieClip
+	 </td></tr></table><a name="classSummary"></a><div class="summaryTableTitle">Classes</div><table cellpadding="3" cellspacing="0" class="summaryTable"><tr><th>&nbsp;</th><th width="30%">Class</th><th width="70%">Description</th></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISImageSprite.html">JISImageSprite</a></td><td class="summaryTableLastCol">
+	 图片容器，可以加载一个图片进行显示
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUIManager.html">JISUIManager</a></td><td class="summaryTableLastCol">
+	 ui管理，该类管理的UI不会进行addChild操作，只会当作引用来进行管理
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUIMovieClipManager.html">JISUIMovieClipManager</a></td><td class="summaryTableLastCol">
+	 该类只是将管理的display转换为SwfMovieClip，方便使用
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUIMovieClipSprite.html">JISUIMovieClipSprite</a></td><td class="summaryTableLastCol">
+	 该类只是将管理的display转换为SwfMovieClip，方便使用
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUISprite.html">JISUISprite</a></td><td class="summaryTableLastCol">
+	 UI基础类
+	 </td></tr></table><p></p><div><p></p><center class="copyright"><footer></footer><br/>Fri Nov 29 2013, 06:31 PM +08:00  </center></div></div></body></html><!--<br/>Fri Nov 29 2013, 06:31 PM +08:00  -->

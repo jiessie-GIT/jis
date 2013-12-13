@@ -1,0 +1,63 @@
+package
+{
+	import flash.filesystem.File;
+	
+	import jis.ui.component.JISButton;
+	import jis.ui.component.JISCuttingButtonGroup;
+	import jis.ui.component.JISScrollTable;
+	import jis.ui.component.JISUIWindow;
+	
+	import starling.display.Sprite;
+	import starling.events.Event;
+	
+	
+	/**
+	 * 
+	 * @author jiessie 2013-11-27
+	 */
+	public class JISMainUIWindow extends JISUIWindow
+	{
+		public var _ProgressTest:JISProgressTestUIManager;
+		public var _BtnList:JISCuttingButtonGroup;
+		public var _ScrollTable:Sprite;
+		public var _AddTableCellBtn:JISButton;
+		private var tableScroll:JISScrollTable;
+		
+		private var btnIndex:int = 0;
+		
+		public function JISMainUIWindow()
+		{
+			//自定义管理类需要在setAssetSource之前初始化
+			_BtnList = new JISCuttingButtonGroup("_Btn_",JISButton);
+			_ProgressTest = new JISProgressTestUIManager();
+			_AddTableCellBtn = new JISButton();
+			
+			super("spr_TestWindow", "test");
+			setAssetSource(File.applicationDirectory.resolvePath("assets/ui/test/"));
+		}
+		
+		/** init会在资源加载完毕并且建立引用之后调用 */
+		protected override function init():void
+		{
+			//会滚动的表格
+			tableScroll = new JISScrollTable();
+			_ScrollTable.addChild(tableScroll);
+			tableScroll.getTable().setCellInstanceClass(JISTableTestCell);
+			tableScroll.getTable().setPreferredWidth(100);
+			tableScroll.getTable().setPreferredCellWidth(48);
+			tableScroll.getTable().setPreferredCellHeight(35);
+			var cellList:Array = [];
+			for(;btnIndex<100;btnIndex++) cellList.push(btnIndex);
+			tableScroll.width = 100;
+			tableScroll.height = 200;
+			tableScroll.getTable().setCellDatas(cellList,this.getSourceSwf());
+			
+			_AddTableCellBtn.addEventListener(JISButton.BOTTON_CLICK,onBtnClickHandler);
+		}
+		
+		private function onBtnClickHandler(e:Event):void
+		{
+			tableScroll.getTable().addCellData(btnIndex++,this.getSourceSwf());
+		}
+	}
+}
