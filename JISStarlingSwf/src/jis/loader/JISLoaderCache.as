@@ -13,7 +13,7 @@ package jis.loader
 		private static var _ID:int = 1;
 		private static var _loadCache:Dictionary = new Dictionary();
 		
-		/** 
+		/**
 		 * 加载资源
 		 * @param loader 可以是一个url或者是一个file，也可以是一个Array，具体参考Starling->AssetManager#enqueue
 		 * @param loadComplentHandler 加载完毕的回调，会传入AssetManager

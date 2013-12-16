@@ -105,7 +105,7 @@ package jis.ui.component
 					return;
 				}
 				
-				if(this.movie) this.movie.gotoAndStop(state-1);
+				if(this.movie) this.movie.gotoAndStop(Math.min(state-1,this.movie.totalFrames-1));
 				this.state = state;
 			}
 		}

@@ -60,11 +60,11 @@ package jis.ui
 		
 		public override function dispose():void
 		{
-			if(sourceSwf) sourceSwf.dispose(false);
-			sourceSwf = null;
-			if(display) display.dispose();
+			if(display) display.removeFromParent(true);
 			display = null
 			super.dispose();
+			if(sourceSwf) sourceSwf.dispose(false);
+			sourceSwf = null;
 		}
 		/** 获取数据源 */
 		public function getSourceSwf():Swf { return this.sourceSwf; }
