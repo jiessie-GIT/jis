@@ -6,3 +6,5 @@ StarlingSwf扩展UI组件
 开发效率很高，针对复杂的UI也能轻松实现
 
 教程地址：http://bbs.9ria.com/thread-275219-1-1.html
+StarlingSwf地址：https://github.com/zmLiu/StarlingFeathers
+Swf转换工具地址：https://github.com/zmLiu/StarlingSWF
