@@ -6,6 +6,7 @@ package jis.ui
 	import jis.loader.JISSimpleLoaderSprite;
 	
 	import starling.display.Image;
+	import starling.events.Event;
 	import starling.textures.Texture;
 	
 	/**
@@ -52,6 +53,7 @@ package jis.ui
 				image = new Image(texture);
 				this.addChild(image);
 				setIconWH(w,h);
+				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
 			

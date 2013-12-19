@@ -62,5 +62,7 @@ package jis.ui.component
 			_IconMovie = null;
 			super.dispose();
 		}
+		
+		public function getImage():JISImageSprite { return image; }
 	}
 }

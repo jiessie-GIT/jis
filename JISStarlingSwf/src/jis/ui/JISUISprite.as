@@ -1,5 +1,6 @@
 package jis.ui
 {
+	import jis.loader.JISRepeatLoaderCache;
 	import jis.loader.JISSimpleLoaderSprite;
 	import jis.util.JISManagerSpriteUtil;
 	
