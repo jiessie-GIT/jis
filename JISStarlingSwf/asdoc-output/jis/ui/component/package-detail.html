@@ -23,23 +23,31 @@
 	 JISButton集合管理，该集合管理的按钮同一时间只能选择一个
 	 用法：初始化传入JISButton集合或者是通过setBtnList设置集合
 	 当设置集合或者是选中按钮的时候会抛出CLICK_BTN事件和调用selectHandler函数
-	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISCuttingButtonGroup.html">JISCuttingButtonGroup</a></td><td class="summaryTableLastCol">
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISCharQuadBatch.html">JISCharQuadBatch</a></td><td class="summaryTableLastCol">
+	 字符集合处理
+	 工作原理，需要在初始化的时候传入数据源以及导出连接依据
+	 实例，swf中存在如下连接：img_num_1、img_num_2、img_num_3、img_num_4、img_num_-、img_num_+
+	 初始化的时候就需要传入“img_num_”
+	 程序通过setChar("+333")设置内容的话，该显示对象就会显示对应的图片
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISCuttingButtonGroup.html">JISCuttingButtonGroup</a></td><td class="summaryTableLastCol">
 	 集成JISButtonGroup的JISDisplayCutting，会将切割的管理对象交由JISButtonGroup进行管理
-	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISDisplayCutting.html">JISDisplayCutting</a></td><td class="summaryTableLastCol">
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISDisplayCutting.html">JISDisplayCutting</a></td><td class="summaryTableLastCol">
 	 切割显示对象管理，管理一个sprite中命名规则如：g1、g2、g3...这种以固定标识开头的显示对象
 	 你可以通过初始化的时候传入标识字符和切割后进行管理的类，程序会在切割的时候自动创建对应的管理类，然后交由管理类来进行管理该显示对象
 	 管理类必须为JISUIManager的子类
 	 通过该类进行管理子对象的话，子对象必须实现JISIDisplayCuttingCell接口
-	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISIconManager.html">JISIconManager</a></td><td class="summaryTableLastCol">
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISIconManager.html">JISIconManager</a></td><td class="summaryTableLastCol">
 	 图标管理类,内部封装了JISImageSprite，使用该类的话Sprite中必须包含一个命名为_IconMovie的Sprite
-	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISProgress.html">JISProgress</a></td><td class="summaryTableLastCol">
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISProgress.html">JISProgress</a></td><td class="summaryTableLastCol">
 	 进度条，该进度条不为UI组件，如果想在UI中使用的话请使用JISUIProgressManager
-	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISScrollTable.html">JISScrollTable</a></td><td class="summaryTableLastCol">
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISScrollTable.html">JISScrollTable</a></td><td class="summaryTableLastCol">
 	 能够滚动的Table,操作table内容的话请调用getTable()获取JISTable实例
-	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISTable.html">JISTable</a></td><td class="summaryTableLastCol">
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISTable.html">JISTable</a></td><td class="summaryTableLastCol">
 	 表格
-	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUIEffect.html">JISUIEffect</a></td><td class="summaryTableLastCol">
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUIEffect.html">JISUIEffect</a></td><td class="summaryTableLastCol">
 	 管理UI中的特效，目前只支持特效从xx帧播放到xx帧，每次调用start都会从指定起始帧开始播放
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUIMultipleProgressManager.html">JISUIMultipleProgressManager</a></td><td class="summaryTableLastCol">
+	 支持多条进度条的组件，进度条顺序为Display#name顺序
 	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUIProgressManager.html">JISUIProgressManager</a></td><td class="summaryTableLastCol">
 	 管理UI中的进度条组件，UI需要具备命名为_Center的Display，当设置进度的时候会改变_Center的width或者height属性，建议_Center为Scale9Image
 	 可选组建_Text类型为TextField，存在该组件的话，会在设置进度的时候赋值“当前进度/最大进度”
@@ -48,4 +56,4 @@
 	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="JISUIWindowManager.html">JISUIWindowManager</a></td><td class="summaryTableLastCol">
 	 UI中管理窗口，比如设计UI的时候窗口中存在2级窗口，就可以使用该窗口进行管理，初始化的时候会关闭2级窗口
 	 可选按钮_Close，必须符合JISButton按钮标准，如果该按钮存在，那么点击该按钮会关闭窗口
-	 </td></tr></table><p></p><div><p></p><center class="copyright"><footer></footer><br/>Fri Nov 29 2013, 06:31 PM +08:00  </center></div></div></body></html><!--<br/>Fri Nov 29 2013, 06:31 PM +08:00  -->
+	 </td></tr></table><p></p><div><p></p><center class="copyright"><footer></footer><br/>Fri Dec 20 2013, 11:47 AM +08:00  </center></div></div></body></html><!--<br/>Fri Dec 20 2013, 11:47 AM +08:00  -->
