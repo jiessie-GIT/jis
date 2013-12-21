@@ -451,6 +451,7 @@ package jis.ui.component
 			{
 				setSelected(this.tabbedCellList[0]);
 			}
+			addToStage(null);
 		}
 		
 		/** 根据Model删除对应的值的内容，该值必须为通过setCellInstanceClass或者是setCellInstanceClass进行设置的，并且中间不可以有更改 */
