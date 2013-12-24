@@ -16,6 +16,13 @@ package jis.ui.component
 	 */
 	public class JISButtonGroup extends JISUIManager
 	{
+		/** 单选模式 */
+		public static const STAGE_RADIO:String = "radio";
+		/** 多选模式 */
+		public static const STAGE_MULTI:String = "multi";
+		/** 普通模式 */
+		public static const STAGE_NORMAL:String = "normal";
+		
 		/** 点击了管理列表中的按钮 */
 		public static const CLICK_BTN:String = "CLICK_BTN";
 		
@@ -24,6 +31,8 @@ package jis.ui.component
 		private var currSelectBtn:JISButton;
 		/** 选中回调函数 */
 		private var selectHandler:Function;
+		
+		private var state:String = STAGE_RADIO;
 		
 		public function JISButtonGroup(list:Array = null)
 		{
@@ -113,14 +122,14 @@ package jis.ui.component
 		/** 设置选中按钮 */
 		public function setSelectBtn(btn:JISButton):void
 		{
-			if(currSelectBtn == btn) return;
-			if(currSelectBtn)
+			if(isRadio() && currSelectBtn == btn) return;
+			if(isRadio() && currSelectBtn)
 			{
 				currSelectBtn.setSelected(false);
 			}
 			currSelectBtn = btn;
 			//将当前按钮设为不可点击
-			currSelectBtn.setSelected(true);
+			if(!isNormal()) currSelectBtn.setSelected(true);
 			this.dispatchEvent(new Event(CLICK_BTN));
 			if(selectHandler != null)
 			{
@@ -139,5 +148,13 @@ package jis.ui.component
 			selectHandler = null;
 			super.dispose();
 		}
+		/** 是否单选模式 */
+		public function isRadio():Boolean { return this.state == STAGE_RADIO; }
+		/** 是否多选模式 */
+		public function isMulti():Boolean { return this.state == STAGE_MULTI; }
+		/** 是否普通模式 */
+		public function isNormal():Boolean { return this.state == STAGE_NORMAL; }
+		
+		public function setState(state:String):void { this.state = state; }
 	}
 }
