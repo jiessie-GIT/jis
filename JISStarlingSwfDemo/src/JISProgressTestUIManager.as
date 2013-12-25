@@ -31,8 +31,8 @@ package
 		
 		protected override function init():void
 		{
-			_AddBtn.addEventListener(JISButton.BOTTON_CLICK,onClickAddHandler);
-			_DecBtn.addEventListener(JISButton.BOTTON_CLICK,onClickDecHandler);
+			_AddBtn.addEventListener(JISButton.BUTTON_CLICK,onClickAddHandler);
+			_DecBtn.addEventListener(JISButton.BUTTON_CLICK,onClickDecHandler);
 			updateProgress();
 		}
 		

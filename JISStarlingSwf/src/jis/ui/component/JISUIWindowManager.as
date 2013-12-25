@@ -25,7 +25,7 @@ package jis.ui.component
 		public override function setCurrDisplay(display:DisplayObject):void
 		{
 			super.setCurrDisplay(display);
-			if(_Close) _Close.addEventListener(JISButton.BOTTON_CLICK,close);
+			if(_Close) _Close.addEventListener(JISButton.BUTTON_CLICK,close);
 			close();
 		}
 		
@@ -43,7 +43,7 @@ package jis.ui.component
 		
 		public override function dispose():void
 		{
-			if(_Close) _Close.removeEventListener(JISButton.BOTTON_CLICK,close);
+			if(_Close) _Close.removeEventListener(JISButton.BUTTON_CLICK,close);
 			_Close = null;
 			super.dispose();
 		}

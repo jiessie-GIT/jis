@@ -65,7 +65,7 @@ package jis.ui.component
 			{
 				for each(var oldBtn:JISButton in this.btnList)
 				{
-					oldBtn.removeEventListener(JISButton.BOTTON_CLICK,onBtnClickHandler);
+					oldBtn.removeEventListener(JISButton.BUTTON_CLICK,onBtnClickHandler);
 				}
 			}
 			
@@ -73,7 +73,7 @@ package jis.ui.component
 			
 			for each(var btn:JISButton in list)
 			{
-				btn.addEventListener(JISButton.BOTTON_CLICK,onBtnClickHandler);
+				btn.addEventListener(JISButton.BUTTON_CLICK,onBtnClickHandler);
 				this.btnList.push(btn);
 			}
 			setSelectBtn(btnList[0])
@@ -84,7 +84,7 @@ package jis.ui.component
 		{
 			for each(var btn:JISButton in list)
 			{
-				btn.addEventListener(JISButton.BOTTON_CLICK,onBtnClickHandler);
+				btn.addEventListener(JISButton.BUTTON_CLICK,onBtnClickHandler);
 				this.btnList.push(btn);
 			}
 		}
@@ -141,7 +141,7 @@ package jis.ui.component
 		{
 			for each(var oldBtn:JISButton in this.btnList)
 			{
-				oldBtn.removeEventListener(JISButton.BOTTON_CLICK,onBtnClickHandler);
+				oldBtn.removeEventListener(JISButton.BUTTON_CLICK,onBtnClickHandler);
 			}
 			btnList = null;
 			currSelectBtn = null;

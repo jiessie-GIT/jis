@@ -17,7 +17,7 @@ package jis.ui.component
 	public class JISButton extends JISUIMovieClipManager
 	{
 		/** 按钮点击时间 */
-		public static const BOTTON_CLICK:String = "click";
+		public static const BUTTON_CLICK:String = "click";
 		
 		/** 默认状态 */
 		public static const DEFULT:int = 1;
@@ -57,7 +57,7 @@ package jis.ui.component
 			}else
 			{
 				setState(DEFULT);
-				if(isDown) this.dispatchEvent(new Event(BOTTON_CLICK));
+				if(isDown) this.dispatchEvent(new Event(BUTTON_CLICK));
 				isDown = false;
 			}
 		}

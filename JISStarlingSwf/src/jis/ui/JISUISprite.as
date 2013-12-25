@@ -39,11 +39,12 @@ package jis.ui
 		protected override function loadComplete():void
 		{
 			sourceSwf = new Swf(getAssetByteArrayForName(assetGetName),getAssetManager());
-			setCurrDisplay(sourceSwf.createSprite(swfHrefName));
+			if(swfHrefName != "")setCurrDisplay(sourceSwf.createSprite(swfHrefName));
 		}
 		/** 设置当前显示的对象 */
 		public function setCurrDisplay(display:DisplayObject):void
 		{
+			if(!display) return;
 			this.display = display;
 			addCurrDisplay(display);
 			if(display is DisplayObjectContainer) syncPropertyForDisplayContainer(display as DisplayObjectContainer);

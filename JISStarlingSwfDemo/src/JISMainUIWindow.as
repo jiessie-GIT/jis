@@ -59,11 +59,11 @@ package
 			tableScroll.height = 200;
 			tableScroll.getTable().setCellDatas(cellList,this.getSourceSwf());
 			
-			_TopBtn.addEventListener(JISButton.BOTTON_CLICK,onTopBtnHandler);
-			_TopPageBtn.addEventListener(JISButton.BOTTON_CLICK,onTopPageBtnHandler);
-			_BottomBtn.addEventListener(JISButton.BOTTON_CLICK,onBottomBtnHandler);
-			_BottomPageBtn.addEventListener(JISButton.BOTTON_CLICK,onBottomPageBtnHandler);
-			_AddTableCellBtn.addEventListener(JISButton.BOTTON_CLICK,onBtnClickHandler);
+			_TopBtn.addEventListener(JISButton.BUTTON_CLICK,onTopBtnHandler);
+			_TopPageBtn.addEventListener(JISButton.BUTTON_CLICK,onTopPageBtnHandler);
+			_BottomBtn.addEventListener(JISButton.BUTTON_CLICK,onBottomBtnHandler);
+			_BottomPageBtn.addEventListener(JISButton.BUTTON_CLICK,onBottomPageBtnHandler);
+			_AddTableCellBtn.addEventListener(JISButton.BUTTON_CLICK,onBtnClickHandler);
 		}
 		
 		private function onBtnClickHandler(e:Event):void
