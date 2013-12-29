@@ -90,3 +90,17 @@
 12.JISUIWindowManager
 --------------------
 	窗口管理类，通常用作2级窗口使用，与普通的JISUIManager处理方式一样
+13.JISNumberInputWindow
+--------------------
+	数字输入框，需要Sprite中命名为“_Num_”开头，如：”_Num_1“、”_Num_2“、”_Num_3“......
+14.JISTweenSwitchCuttingButtonGroup
+--------------------
+	动态切换Button列表，用法同JISButtonGroup，需要通过setIdentificationForName指定一个目标按钮，后续点击其他按钮的话会替换到目标按钮位置。
+	可以通过setMoveTransition的方式切换Tween的移动方式。
+14.JISMaskIntervalUIManager
+--------------------
+	冷却遮罩，用法同JISIconUIManager类似，可以直接管理一个Image不需要存在特殊命名，效果类似游戏中技能从上倒下冷却效果。
+	STATE_TOP_BOTTOM 从上到下冷却
+	STATE_BOTTOM_TOP 从下到上冷却
+	STATE_LEFT_RIGHT 从左到右冷却
+	STATE_RIGHT_LEFT 从右到做冷却

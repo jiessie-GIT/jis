@@ -80,6 +80,18 @@ package jis.ui.component
 					trace(this.y);
 					for each(var tabbedCell:JISITableCell in tabbedCellList)
 					{
+						if(tabbedCell is JISITableMultiCell)
+						{
+							for each(var cellClid:JISITableCell in (tabbedCell as JISITableMultiCell).getCells())
+							{
+								var cellClidTouch:Touch = e.getTouch(cellClid.getDisplay(),TouchPhase.ENDED);
+								if(cellClidTouch)
+								{
+									(tabbedCell as JISITableMultiCell).setSelectCell(cellClid);
+									break;
+								}
+							}
+						}
 						var cellTouch:Touch = e.getTouch(tabbedCell.getDisplay(),TouchPhase.ENDED);
 						if(cellTouch)
 						{
@@ -372,6 +384,7 @@ package jis.ui.component
 			for each(var tableCell:JISITableCell in tabbedCellList)
 			{
 				tableCell.getDisplay().removeFromParent(true);
+				tableCell.dispose();
 			}
 			tabbedCellList = null;
 			currSelect = null;
@@ -414,6 +427,15 @@ package jis.ui.component
 					}else
 					{
 						cell = new cellInstanceClass();
+					}
+					if(cell is JISITableMultiCell && data is Array)
+					{
+						//将集合数据分散给列表子级
+						var i:int = 0;
+						for each(var cellClid:JISITableCell in (cell as JISITableMultiCell).getCells())
+						{
+							cellClid.setValue(data[i++]);
+						}
 					}
 					cell.setValue(data);
 				}else

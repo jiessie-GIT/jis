@@ -25,7 +25,7 @@ package jis.ui
 		 * @param swfHrefName swf中导出连接名，如：“spr_MainUI”
 		 * @param assetGetName swf文件名，如：加载的main.swf文件的话，该值为“main”
 		 */
-		public function JISUISprite(swfHrefName:String,assetGetName:String)
+		public function JISUISprite(swfHrefName:String = "",assetGetName:String = "")
 		{
 			super();
 			this.swfHrefName = swfHrefName;
@@ -62,7 +62,11 @@ package jis.ui
 		
 		public override function dispose():void
 		{
-			if(display) display.removeFromParent(true);
+			if(display)
+			{
+				JISManagerSpriteUtil.disposeSyncManagerSprite(this,this.display);
+				display.removeFromParent(true);
+			}
 			display = null
 			super.dispose();
 			if(sourceSwf) sourceSwf.dispose(false);

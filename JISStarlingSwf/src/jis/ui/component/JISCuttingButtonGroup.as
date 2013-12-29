@@ -21,6 +21,8 @@ package jis.ui.component
 		
 		/** 设置选中按钮回调函数，在选中按钮的时候将会调用该函数，并传入选中的按钮 */
 		public function setSelectBtnHandler(handler:Function):void { this.btnGroup.setSelectBtnHandler(handler); }
+		/** 获取按钮分组容器 */
+		public function getButtonGroup():JISButtonGroup { return this.btnGroup }
 		
 		public override function dispose():void
 		{

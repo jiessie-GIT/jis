@@ -2,6 +2,8 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="jis.ui.component.JISNumberInputWindow"/>
+    <classEntry path="jis.ui.component.JISITableMultiCell"/>
+    <classEntry path="jis.ui.component.JISMaskIntervalUIManager"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

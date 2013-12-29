@@ -27,7 +27,12 @@ package jis.ui
 		protected function init():void {}
 		public function dispose():void 
 		{
-			if(this.display) this.display.removeFromParent(true);
+			if(this.display)
+			{
+				JISManagerSpriteUtil.disposeSyncManagerSprite(this,this.display);
+				//没有负责添加创建就不负责移除销毁了
+//				this.display.removeFromParent(true);
+			}
 			this.display = null;
 		}
 		/** 将一个显示对象的子对象交给该类进行管理 */

@@ -154,7 +154,16 @@ package jis.ui.component
 		public function isMulti():Boolean { return this.state == STAGE_MULTI; }
 		/** 是否普通模式 */
 		public function isNormal():Boolean { return this.state == STAGE_NORMAL; }
-		
+		/** 设置按钮组模式，参考JISButtonGroup静态参数 */
 		public function setState(state:String):void { this.state = state; }
+		/** 根据名字获取JISButton */
+		public function getButtonForDisplayName(name:String):JISButton
+		{
+			for each(var btn:JISButton in btnList)
+			{
+				if(btn.getDisplay().name == name) return btn;
+			}
+			return null;
+		}
 	}
 }
