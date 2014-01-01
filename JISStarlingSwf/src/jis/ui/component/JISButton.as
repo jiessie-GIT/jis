@@ -127,6 +127,9 @@ package jis.ui.component
 			return this.state;
 		}
 		
+		/** 是否选中状态 */
+		public function isSelected():Boolean { return this.state == SELECTED; }
+		
 		public override function dispose():void
 		{
 			JISEventUtil.removeDisplayClickEventHandler(display);

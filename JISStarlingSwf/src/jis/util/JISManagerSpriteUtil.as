@@ -20,15 +20,9 @@ package jis.util
 			if(display is DisplayObjectContainer)
 			{
 				var disContainer:DisplayObjectContainer = display as DisplayObjectContainer;
-				var displayChilds:Array = [];
-				for(var i:int= 0;i<disContainer.numChildren;i++)
+				for each(var childDisplay:DisplayObject in getDisplayCOntainerChlids(disContainer))
 				{
-					displayChilds.push(disContainer.getChildAt(i));
-				}
-				for(i=0;i<disContainer.numChildren;i++)
-				{
-					var childDisplay:DisplayObject = displayChilds[i];
-					if(childDisplay.name != "" && (spriteManager as Object).hasOwnProperty(childDisplay.name))
+					if((spriteManager as Object).hasOwnProperty(childDisplay.name))
 					{
 						if(spriteManager[childDisplay.name] is JISISpriteManager)
 						{
@@ -61,6 +55,17 @@ package jis.util
 					}
 				}
 			}
+		}
+		
+		/**  获得显示列表内容 */
+		public static function getDisplayCOntainerChlids(display:DisplayObjectContainer):Array
+		{
+			var displayChilds:Array = [];
+			for(var i:int= 0;i<display.numChildren;i++)
+			{
+				displayChilds.push(display.getChildAt(i));
+			}
+			return displayChilds;
 		}
 	}
 }

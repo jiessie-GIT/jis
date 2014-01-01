@@ -6,6 +6,7 @@ package jis.ui.component
 	import jis.ui.JISUIManager;
 	import jis.ui.JISUIMovieClipManager;
 	import jis.util.JISArrayUtil;
+	import jis.util.JISManagerSpriteUtil;
 	
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -57,11 +58,10 @@ package jis.ui.component
 		protected override function init():void
 		{
 			displayInstanceArray = [];
-			var container:DisplayObjectContainer = this.display as DisplayObjectContainer;
-			for(var i:int = 0;i<container.numChildren;i++)
+			
+			for each(var displayChild:DisplayObject in JISManagerSpriteUtil.getDisplayCOntainerChlids(this.display as DisplayObjectContainer))
 			{
-				var displayChild:DisplayObject = container.getChildAt(i);
-				if(displayChild.name.indexOf(spliceChar) >= 0)
+				if(displayChild.name != null && displayChild.name.indexOf(spliceChar) >= 0)
 				{
 					var displaySpliceChar:String = displayChild.name.substring(spliceChar.length);
 					var movieClip:JISUIManager = getClassInstance();

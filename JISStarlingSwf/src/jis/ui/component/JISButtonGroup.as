@@ -129,7 +129,8 @@ package jis.ui.component
 			}
 			currSelectBtn = btn;
 			//将当前按钮设为不可点击
-			if(!isNormal()) currSelectBtn.setSelected(true);
+			if(isRadio()) currSelectBtn.setSelected(true);
+			else if(isMulti()) currSelectBtn.setSelected(!currSelectBtn.isSelected());
 			this.dispatchEvent(new Event(CLICK_BTN));
 			if(selectHandler != null)
 			{

@@ -10,13 +10,14 @@ package jis.ui.component
 		
 		public function JISCuttingButtonGroup(spliceChar:String, clazz:Class=null)
 		{
+			btnGroup = new JISButtonGroup();
 			super(spliceChar, clazz);
 		}
 		
 		protected override function init():void
 		{
 			super.init();
-			btnGroup = new JISButtonGroup(this.getInstanceArray());
+			btnGroup.setBtnList(this.getInstanceArray());
 		}
 		
 		/** 设置选中按钮回调函数，在选中按钮的时候将会调用该函数，并传入选中的按钮 */

@@ -73,28 +73,39 @@ package jis.ui.component
 			maskImage.y = 0;
 			maskImage.x = 0;
 			maskImage.height = height;
+			maskImage.width = width;
+			trace("设置时间",maskImage.x,maskImage.y,maskImage.width,maskImage.height);
 			maskedDisplayObject.visible = true;
 			if(_state == STATE_TOP_BOTTOM || _state == STATE_BOTTOM_TOP)
 			{
-				Starling.juggler.tween(maskImage,millisecond/1000.0,{"height":0,"onComplete":maskEndHandler,"transition":_transition});
 				if(_state == STATE_TOP_BOTTOM)
 				{
-					Starling.juggler.tween(maskImage,millisecond/1000.0,{"y":height,"transition":_transition});
+					Starling.juggler.tween(maskImage,millisecond/1000.0,{"y":height,"height":0,"onComplete":maskEndHandler,"transition":_transition});
+				}else
+				{
+					Starling.juggler.tween(maskImage,millisecond/1000.0,{"height":0,"onComplete":maskEndHandler,"transition":_transition});
 				}
 			}else
 			{
-				Starling.juggler.tween(maskImage,millisecond/1000.0,{"width":0,"onComplete":maskEndHandler,"transition":_transition});
 				if(_state == STATE_RIGHT_LEFT)
 				{
-					Starling.juggler.tween(maskImage,millisecond/1000.0,{"x":width,"transition":_transition});
+					Starling.juggler.tween(maskImage,millisecond/1000.0,{"x":width,"width":0,"onComplete":maskEndHandler,"transition":_transition});
+				}else
+				{
+					Starling.juggler.tween(maskImage,millisecond/1000.0,{"width":0,"onComplete":maskEndHandler,"transition":_transition});
 				}
 			}
 		}
 		
 		private function maskEndHandler():void
 		{
+			trace("时间结束");
 			maskedDisplayObject.visible = false;
-			if(_completeFunction) _completeFunction.call();
+			if(_completeFunction)
+			{
+				if(_completeFunction.length == 0) _completeFunction.call();
+				else if(_completeFunction.length == 1) _completeFunction.call(null,this);
+			}
 		}
 
 		public function set completeFunction(value:Function):void

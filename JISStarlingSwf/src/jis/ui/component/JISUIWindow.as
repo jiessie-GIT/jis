@@ -16,7 +16,7 @@ package jis.ui.component
 		
 		/**
 		 * @param swfHrefName swf中导出连接名，如：“spr_MainUI”
-		 * @param assetGetName swf文件名，如：加载的main.swf文件的话，该值为“main”
+		 * @param assetGetName swf文件名，如：加载的main.bytes、main.png、main.xml或者main文件夹的话，该值为“main”
 		 */
 		public function JISUIWindow(swfHrefName:String, assetGetName:String)
 		{

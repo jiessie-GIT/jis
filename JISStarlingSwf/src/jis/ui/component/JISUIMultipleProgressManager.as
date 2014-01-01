@@ -4,6 +4,7 @@ package jis.ui.component
 	import jis.util.JISDisplayUtil;
 	
 	import starling.core.Starling;
+	import starling.events.Event;
 	import starling.text.TextField;
 
 	/**
@@ -76,7 +77,12 @@ package jis.ui.component
 		
 		protected function tweenProgress(progress:int):void
 		{
-			Starling.juggler.tween(this,0.6,{"currProgress":progress});
+			Starling.juggler.tween(this,0.6,{"currProgress":progress,"onComplete":onTweenCompleteHandler});
+		}
+		
+		private function onTweenCompleteHandler():void
+		{
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		private function getProgressForIndex(index:int):JISUIProgressManager
