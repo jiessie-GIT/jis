@@ -26,10 +26,6 @@ package jis.ui.component
 	{
 		/** 表格中单元格点击事件 */
 		public static const TABBED_SELECTED:String = "TABBED_SELECTED";
-		/** 表格中单元格删除事件 */
-		public static const TABBED_REMOVE:String = "TABBED_REMOVE";
-		/** 表格中单元格添加事件 */
-		public static const TABBED_ADD:String = "TABBED_ADD";
 		/** 单元格列表 */
 		private var tabbedCellList:Array = [];
 		
@@ -49,6 +45,8 @@ package jis.ui.component
 		private var preferredHeight:Number = 0;
 		/** 当前选中的单元格 */
 		private var currSelect:JISITableCell;
+		/** 是否允许重复选中，如果不是，则选中相同的一个的话相当于取消选中 */
+		private var allowRepeatSelect:Boolean = true;
 		
 		/**
 		 * @param tabbedCellList 初始化格子列表，列表中的项需要实现JISITableCell接口或者是DisplayObject的子类
@@ -74,10 +72,8 @@ package jis.ui.component
 			var touch:Touch = e.getTouch(this,TouchPhase.ENDED);
 			if(touch)
 			{
-				trace("touch");
 				if(touch.phase == TouchPhase.ENDED)
 				{
-					trace(this.y);
 					for each(var tabbedCell:JISITableCell in tabbedCellList)
 					{
 						if(tabbedCell is JISITableMultiCell)
@@ -99,9 +95,6 @@ package jis.ui.component
 							return;
 						}
 					}
-				}else if(touch.phase == TouchPhase.BEGAN)
-				{
-					trace(this.y);
 				}
 			}
 		}
@@ -129,7 +122,7 @@ package jis.ui.component
 		
 		/** 
 		 * 设置显示列表，列表中可以是显示对象，也可以是实现了ITabbedCell的对象，其他则不<br>
-		 * flag:是否设置默认选项  false 设置数组下标为0  true 不设置
+		 * @param flag 是否设置默认选中选项  false 设置默认选中数组下标为0  true 不设置
 		 */
 		public function setTabbedCellList(list:Array , flag:Boolean = false):void
 		{
@@ -139,6 +132,7 @@ package jis.ui.component
 				{
 					if(tabbedCell1 is JISITableCell)
 					{
+						if(tabbedCell1.getDisplay()) tabbedCell1.getDisplay().removeFromParent();
 						tabbedCell1.dispose();
 					}
 				}
@@ -163,11 +157,20 @@ package jis.ui.component
 			}
 			//更新坐标
 			updateTabbdeCellLocation();
+			
+			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/** 设置当前选中项 */
 		public function setSelected(tabbedCell:*):void
 		{
+			if(tabbedCell == currSelect && !allowRepeatSelect)
+			{
+				//不允许重复选中
+				currSelect.selected();
+				currSelect = null;
+				return;
+			}
 			if(tabbedCell is JISITableCell)
 			{
 				if(currSelect && tabbedCellList.indexOf(currSelect) >= 0)
@@ -205,26 +208,15 @@ package jis.ui.component
 					//横向排列
 					var newColSpace:int = currIndex*colSpace;
 					display.y = currY;
-					display.x = currIndex*getDisplayWidth(display)+newColSpace;
+					display.x = currWidth;//currIndex*getDisplayWidth(display)+newColSpace;
 					currWidth += getDisplayWidth(display)+colSpace;
-					//					if(currIndex != 0)
-					//					{
-					//						display.x += rowSpace;
-					//						currWidth += rowSpace;
-					//					}
 				}else
 				{
 					//竖向排列
 					var newRowSpace:int = currIndex*rowSpace;
 					display.x = currX;
-					display.y = currIndex*getDisplayHeight(display)+newRowSpace;
+					display.y = currHeight;//currIndex*getDisplayHeight(display)+newRowSpace;
 					currHeight += getDisplayHeight(display)+rowSpace;
-					
-					//					if(currIndex != 0)
-					//					{
-					//						display.y += colSpace;
-					//						currHeight += colSpace;
-					//					}
 				}
 				currIndex++;
 				//不是最后一个
@@ -270,9 +262,13 @@ package jis.ui.component
 			if(tableCell)
 			{
 				tabbedCellList.splice(index,1);
-				if(tableCell is JISITableCell) (tableCell as JISITableCell).dispose();
+				if(tableCell is JISITableCell)
+				{
+					if((tableCell as JISITableCell).getDisplay()) (tableCell as JISITableCell).getDisplay().removeFromParent();
+					(tableCell as JISITableCell).dispose();
+				}
 				updateTabbdeCellLocation();
-				this.dispatchEvent(new Event(TABBED_REMOVE));
+				this.dispatchEvent(new Event(Event.CHANGE));
 			}
 		}
 		
@@ -288,7 +284,7 @@ package jis.ui.component
 			}
 			this.addChild(tableCell is JISITableCell ? tableCell.getDisplay():tableCell);
 			updateTabbdeCellLocation();
-			this.dispatchEvent(new Event(TABBED_ADD));
+			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/** 
@@ -405,8 +401,9 @@ package jis.ui.component
 		 * @param datas 数据列表，有多少数据就创建多少个cell
 		 * @param createParams 创建cell的参数，会将该参数传递到cell的构造函数中
 		 * @param hasCheckOld 是否检查已存在数据源对应的对象，如果存在该数据源对应的cell的话，将不会再去重新创建
+		 * @param flag 是否设置默认选中选项  false 设置默认选中数组下标为0  true 不设置
 		 */
-		public function setCellDatas(datas:*,createParams:* = null,hasCheckOld:Boolean = false):Array
+		public function setCellDatas(datas:*,createParams:* = null,hasCheckOld:Boolean = false , flag:Boolean = false):Array
 		{
 			if(cellInstanceClass == null)
 			{
@@ -446,12 +443,12 @@ package jis.ui.component
 				instanceDataDic[data] = cell;
 				cellList.push(cell);
 			}
-			setTabbedCellList(cellList);
+			setTabbedCellList(cellList,flag);
 			return cellList;
 		}
 		
 		/** 将数据当成Model的形式，根据setCellInstanceClass设置的类型创建对应的显示对象 */
-		public function addCellData(data:*,createParams:* = null):void
+		public function addCellData(data:*,createParams:* = null,flag:Boolean = false):void
 		{
 			if(cellInstanceClass == null)
 			{
@@ -469,7 +466,7 @@ package jis.ui.component
 			cell.setValue(data);
 			instanceDataDic[data] = cell;
 			addTableCell(cell);
-			if(this.tabbedCellList.length == 1)
+			if(!flag && this.tabbedCellList.length == 1)
 			{
 				setSelected(this.tabbedCellList[0]);
 			}
@@ -513,6 +510,23 @@ package jis.ui.component
 		public function getPreferredCellWidth():int
 		{
 			return cellPreferredWidth;
+		}
+		
+		public function getTableCellForData(data:*):JISITableCell { return instanceDataDic[data]; }
+		public function setTableCellVisableForData(data:*,visable:Boolean):void
+		{
+			var cell:JISITableCell = getTableCellForData(data);
+			if(cell)
+			{
+				cell.getDisplay().visible = visable;
+				updateTabbdeCellLocation();
+			}
+		}
+		
+		/** 是否允许重复选中，如果不是，则选中相同的一个的话相当于取消选中 */
+		public function setAllowRepeatSelect(value:Boolean):void
+		{
+			allowRepeatSelect = value;
 		}
 	}
 }

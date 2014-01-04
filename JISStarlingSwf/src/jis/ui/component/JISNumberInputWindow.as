@@ -25,9 +25,10 @@ package jis.ui.component
 		private var timeId:uint;
 		private var changeHandler:Function;
 		
-		public function JISNumberInputWindow(swfHrefName:String, assetGetName:String)
+		public function JISNumberInputWindow(swfHrefName:String, assetGetName:String,scale:Number = 1)
 		{
 			super(swfHrefName, assetGetName);
+			this.scaleX = this.scaleY = scale;
 		}
 		
 		protected override function init():void

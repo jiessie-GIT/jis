@@ -1,6 +1,11 @@
 package jis.ui.component
 {
+	import flash.geom.Rectangle;
+	
 	import lzm.starling.display.ScrollContainer;
+	import lzm.util.CollisionUtils;
+	
+	import starling.events.Event;
 
 	/**
 	 * 能够滚动的Table,操作table内容的话请调用getTable()获取JISTable实例
@@ -14,6 +19,7 @@ package jis.ui.component
 			super();
 			table = new JISTable(tabbedCellList, hasClickListener);
 			this.addScrollContainerItem(table);
+			table.addEventListener(Event.CHANGE,onTableChangeHandler);
 		}
 		
 		public function getTable():JISTable { return this.table; }
@@ -64,6 +70,34 @@ package jis.ui.component
 			var wPage:int = Math.min(page,maxWPage-1);
 			var hPage:int = Math.min(page,maxHPage-1);
 			scrollToPosition(this.width*wPage,this.height*hPage,time);
+		}
+		
+		private function onTableChangeHandler(e:Event):void
+		{
+			updateShowItems();
+			this.addChild(table);
+		}
+		
+		/**
+		 * 更新显示的对象
+		 * */
+		public override function updateShowItems():void{
+			_viewPort2.x = _horizontalScrollPosition;
+			_viewPort2.y = _verticalScrollPosition;
+			_viewPort2.width = width;
+			_viewPort2.height = height;
+			
+			var itemViewPort:Rectangle = new Rectangle();
+			for each(var tableCell:JISITableCell in this.getTable().getTabbedList())
+			{
+				itemViewPort.x = tableCell.getDisplay().x;
+				itemViewPort.y = tableCell.getDisplay().y;
+				itemViewPort.width = tableCell.getDisplay().width;
+				itemViewPort.height = tableCell.getDisplay().height;
+				
+				tableCell.getDisplay().visible = CollisionUtils.isIntersectingRect(_viewPort2,itemViewPort);
+			}
+			
 		}
 	}
 }

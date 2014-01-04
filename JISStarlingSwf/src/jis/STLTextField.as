@@ -169,8 +169,8 @@ package jis
             textFormat.kerning = mKerning;
             
             sNativeTextField.defaultTextFormat = textFormat;
-            sNativeTextField.width = width;
-            sNativeTextField.height = height;
+			sNativeTextField.width = width;
+			sNativeTextField.height = height;
             sNativeTextField.antiAliasType = AntiAliasType.ADVANCED;
             sNativeTextField.selectable = false;            
             sNativeTextField.multiline = true;            

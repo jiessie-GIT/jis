@@ -47,8 +47,8 @@ package jis.util
 		{
 			var fInputText:flash.text.TextField = new flash.text.TextField();
 			var point:Point = textField.localToGlobal(new Point());
-			fInputText.x = point.x;
-			fInputText.y = point.y;
+			fInputText.x = point.x*scale;
+			fInputText.y = point.y*scale;
 			fInputText.textColor = textField.color;
 			fInputText.text = textField.text;
 			fInputText.autoSize = hasUpdateAutoSize ? convertSTLAutoSizeToFlash(textField.hAlign):TextFieldAutoSize.NONE;

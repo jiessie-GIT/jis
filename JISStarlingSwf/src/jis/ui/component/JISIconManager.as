@@ -59,6 +59,7 @@ package jis.ui.component
 		public override function dispose():void
 		{
 			image.removeFromParent(true);
+			image = null;
 			_IconMovie = null;
 			super.dispose();
 		}
