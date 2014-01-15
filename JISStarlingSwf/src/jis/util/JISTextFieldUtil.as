@@ -96,6 +96,75 @@ package jis.util
 			textField.removeFromParent(hasDispose);
 			return textInput;
 		}
+		
+		/**
+		 * 根据传入的时间 返回一个格式为  “XX天XX小时XX分钟XX秒”
+		 * @param time 毫秒单位
+		 * @param length 最小保留单位 例如：4为秒 3为保留分，不显示秒  2为保留小时  1为保留天
+		 */ 
+		public static function getTimeStringForTime(time:Number,length:int = 4):String
+		{
+			return getStringForTimeList(getTimeForNum(time,length));
+		}
+		
+		/** 传入时间信息 */
+		public static function getStringForTime(day:int,h:int,m:int,s:int):String
+		{
+			return getStringForTimeList([s,m,h,day]);
+		}
+		
+		/**
+		 * 传入一个数组，数组的格式为  [秒][分][时][天]
+		 * @return 返回一个格式为  “XX天XX小时XX分钟XX秒”
+		 */ 
+		public static function getStringForTimeList(list:Array):String
+		{
+			var result:String = "";
+			
+			var day:int = list.length > 3 ? list[3]:0;
+			var h:int = list.length > 2 ? list[2]:0;
+			var m:int = list.length > 1 ? list[1]:0;
+			var s:int = list.length > 0 ? list[0]:0;
+			if(day > 0)
+			{
+				result += day+"天";
+			}
+			if(h > 0)
+			{
+				result += h+"时";
+			}
+			if(m > 0)
+			{
+				result += m+"分";
+			}
+			if(s > 0)
+			{
+				result += s+"秒";
+			}
+			
+			return result;
+		}
+		
+		/**
+		 * 传入一个数字返回一个数组，数组的格式为  [秒][分][时][天]
+		 * @param length 最小保留单位 例如：4为秒 3为保留分[分][时][天]  2为保留小时[时][天]  1为保留天[天]
+		 */ 
+		public static function getTimeForNum(time:Number,length:int = 4):Array
+		{
+			var day:int = time/(24*60*60*1000);
+			time = time%(24*60*60*1000);
+			var h:int = time/(60*60*1000);
+			time = time%(60*60*1000);
+			var m:int = time/(60*1000);
+			time = time%(60*1000);
+			var s:int = time/1000;
+			var list:Array = [s,m,h,day];
+			for(var i:int = 0;i<list.length - length;i++)
+			{
+				list.splice(i,1,0);
+			}
+			return list;
+		}
 			
 	}
 }

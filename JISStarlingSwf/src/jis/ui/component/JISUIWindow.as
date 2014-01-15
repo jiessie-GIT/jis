@@ -1,6 +1,7 @@
 package jis.ui.component
 {
 	import jis.JISConfig;
+	import jis.ui.JISImageSprite;
 	import jis.ui.JISUISprite;
 	
 	import starling.display.DisplayObject;
@@ -13,6 +14,7 @@ package jis.ui.component
 	public class JISUIWindow extends JISUISprite
 	{
 		public var _Close:JISButton;
+		protected var backImage:JISImageSprite;
 		
 		/**
 		 * @param swfHrefName swf中导出连接名，如：“spr_MainUI”
@@ -46,11 +48,27 @@ package jis.ui.component
 		public override function dispose():void
 		{
 			if(_Close) _Close.removeEventListener(JISButton.BUTTON_CLICK,close);
-			_Close = null;
+			if(backImage)
+			{
+				backImage.removeFromParent(true);
+				backImage = null;
+			}
 			super.dispose();
 		}
 		
 		/** 是否显示 */
 		public function isShow():Boolean { return this.parent != null; }
+		
+		public function setBackImageAssetSource(url:*):void
+		{
+			if(!backImage)
+			{
+				backImage = new JISImageSprite(url);
+				this.addChildAt(backImage,0);
+			}else
+			{
+				backImage.setAssetSource(url);
+			}
+		}
 	}
 }

@@ -16,7 +16,7 @@ package jis.loader
 	{
 		private var assetManager:AssetManager;
 		private var loadProgressHandler:Function;
-		private var assetOnlyId:int;
+		protected var assetOnlyId:int;
 		
 		public function JISSimpleLoaderSprite()
 		{

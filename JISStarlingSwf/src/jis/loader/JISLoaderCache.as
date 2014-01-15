@@ -1,6 +1,7 @@
 package jis.loader
 {
 	import flash.utils.Dictionary;
+	import flash.utils.getQualifiedClassName;
 	
 	import starling.utils.AssetManager;
 	
@@ -12,6 +13,8 @@ package jis.loader
 	{
 		private static var _ID:int = 1;
 		private static var _loadCache:Dictionary = new Dictionary();
+		/** 加载好的url对应ID的列表 */
+		private static var _urlToIdCache:Dictionary = new Dictionary();
 		
 		/**
 		 * 加载资源
@@ -24,6 +27,7 @@ package jis.loader
 		{
 			var id:int;
 			id = _ID++;
+			_urlToIdCache[id] = getAssetUrl(loader);
 			var assetManager:AssetManager = new AssetManager();
 			assetManager.enqueue(loader);
 			assetManager.loadQueue(
@@ -31,6 +35,7 @@ package jis.loader
 				{
 					if(progress >= 1)
 					{
+						trace("JISLoaderCache#loadOk-->>id:",id," info:",loader);
 						_loadCache[id] = assetManager;
 						if(loadComplentHandler != null) loadComplentHandler.call(null,assetManager)
 					}
@@ -45,8 +50,34 @@ package jis.loader
 		public static function disposeAssetManagerForOnlyId(onlyId:int):void
 		{
 			var assetManager:AssetManager = getAssetManagerForOnlyId(onlyId);
-			if(assetManager) assetManager.purge();
+			if(assetManager)
+			{
+				trace("JISLoaderCache#dispose-->>id:",_urlToIdCache[onlyId]);
+				assetManager.purge();
+			}
 			delete _loadCache[onlyId];
+//			trace("JISLoaderCache#remainnum ------------------------↓");
+//			for(var otherOnlyId:* in _loadCache)
+//			{
+//				trace("JISLoaderCache#dispose remain->",otherOnlyId,_urlToIdCache[otherOnlyId]);
+//			}
+		}
+		
+		/**
+		 * 获得加载地址信息
+		 * @param loader 加载地址，可以是url、File、Array
+		 * @return 如果是url直接返回，如果是File会返回File["url"]，如果是Array会进行遍历并将最终结果通过“-”进行拼接
+		 */
+		private static function getAssetUrl(loader:*):String
+		{
+			if(loader is Array)
+			{
+				var newLoaderList:Array = [];
+				for each(var loaderInfo:* in loader) newLoaderList.push(getAssetUrl(loaderInfo));
+				loader = newLoaderList.join("-");
+			}else if(getQualifiedClassName(loader) == "flash.filesystem::File") return loader["url"];
+			
+			return loader;
 		}
 	}
 }

@@ -107,6 +107,7 @@ package jis.ui.component
 			var topMovieIndex:int = mulitiple%getInstanceArray().length;
 			
 			if(topMovie) topMovie.getDisplay().visible = false;
+			if(bottomMovie) bottomMovie.getDisplay().visible = false;
 			
 			if(mulitiple > 0)
 			{
@@ -116,9 +117,6 @@ package jis.ui.component
 				JISDisplayUtil.setDisplayToTop(bottomMovie.getDisplay());
 				bottomMovie.setProgress(1,1);
 				bottomMovie.getDisplay().visible = true;
-			}else if(bottomMovie)
-			{
-				bottomMovie.getDisplay().visible = false;
 			}
 			
 			topMovie = getProgressForIndex(topMovieIndex);

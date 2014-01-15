@@ -4,6 +4,8 @@ package jis.ui.component
 	
 	import starling.display.Image;
 	import starling.display.QuadBatch;
+	import starling.utils.HAlign;
+	import starling.utils.VAlign;
 	
 	
 	/**
@@ -18,22 +20,27 @@ package jis.ui.component
 	{
 		private var swf:Swf;
 		private var charName:String;
-		private var hasCenter:Boolean;
+		/** 垂直方向 */
+		private var vAlign:String;
+		/** 水平方向 */
+		private var hAlign:String;
 		
-		public function JISCharQuadBatch(swf:Swf,charName:String,hasCenter:Boolean = true)
+		public function JISCharQuadBatch(swf:Swf,charName:String,vAlign:String = VAlign.TOP,hAlign:String = HAlign.CENTER)
 		{
 			super();
 			this.swf = swf;
 			this.charName = charName;
-			this.hasCenter = hasCenter;
+			this.vAlign = vAlign;
+			this.hAlign = hAlign;
 		}
 		
 		/**
 		 * 设置显示的字符串
 		 */
-		public function setChar(char:String):void
+		public function setChar(char:*):void
 		{
 			this.reset();
+			if(char == "" || char == null) return;
 			var chars:Array = char.split("");
 			var w:int = 0;
 			for each(var str:String in chars)
@@ -46,7 +53,13 @@ package jis.ui.component
 					this.addImage(image);
 				}
 			}
-			if(this.hasCenter) this.x = -w/2;
+			if(this.vAlign == VAlign.CENTER) this.y = -height/2;
+			else if(this.vAlign == VAlign.BOTTOM) this.y = -height;
+			else this.y = 0;
+			
+			if(this.hAlign == HAlign.CENTER) this.x = -w/2;
+			else if(this.hAlign == HAlign.RIGHT) this.x = -w;
+			else this.y = 0;
 		}
 		
 		public override function dispose():void

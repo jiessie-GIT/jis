@@ -47,6 +47,8 @@ package jis.ui.component
 		private var currSelect:JISITableCell;
 		/** 是否允许重复选中，如果不是，则选中相同的一个的话相当于取消选中 */
 		private var allowRepeatSelect:Boolean = true;
+		/** 选中回调 */
+		private var _selectHandler:Function;
 		
 		/**
 		 * @param tabbedCellList 初始化格子列表，列表中的项需要实现JISITableCell接口或者是DisplayObject的子类
@@ -183,6 +185,7 @@ package jis.ui.component
 			{
 				currSelect.selected(true);
 			}
+			if(_selectHandler) _selectHandler.call(null,currSelect);
 			this.dispatchEvent(new Event(TABBED_SELECTED));
 		}
 		/**
@@ -379,7 +382,7 @@ package jis.ui.component
 		{
 			for each(var tableCell:JISITableCell in tabbedCellList)
 			{
-				tableCell.getDisplay().removeFromParent(true);
+				tableCell.getDisplay().removeFromParent();
 				tableCell.dispose();
 			}
 			tabbedCellList = null;
@@ -474,13 +477,14 @@ package jis.ui.component
 		}
 		
 		/** 根据Model删除对应的值的内容，该值必须为通过setCellInstanceClass或者是setCellInstanceClass进行设置的，并且中间不可以有更改 */
-		public function removeForCellData(data:*):void
+		public function removeForCellData(data:*,flag:Boolean = false):void
 		{
 			if(instanceDataDic[data] != null)
 			{
 				var tabbelCell:JISITableCell = instanceDataDic[data];
 				removeTableCell(instanceDataDic[data]);
 				delete instanceDataDic[data];
+				if(flag) return;
 				//如果是当前选择的话，重新选择一个
 				if(tabbelCell == getSelected() && this.tabbedCellList.length > 0)
 				{
@@ -528,5 +532,12 @@ package jis.ui.component
 		{
 			allowRepeatSelect = value;
 		}
+		
+		/** 设置选中回调，会传入选中的JISITableCell */
+		public function set selectHandler(value:Function):void
+		{
+			_selectHandler = value;
+		}
+
 	}
 }

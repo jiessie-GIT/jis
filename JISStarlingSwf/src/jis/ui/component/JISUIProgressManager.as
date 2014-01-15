@@ -3,7 +3,10 @@ package jis.ui.component
 	import jis.ui.JISUIManager;
 	
 	import starling.display.DisplayObject;
+	import starling.display.Image;
+	import starling.extensions.pixelmask.PixelMaskDisplayObject;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	
 	
 	/**
@@ -20,6 +23,9 @@ package jis.ui.component
 		/** 进度条管理 */
 		protected var progressBar:JISProgress;
 		
+		private var maskedDisplayObject:PixelMaskDisplayObject;
+		private var maskImage:Image;
+		
 		public function JISUIProgressManager(speedProgressHandler:Function = null)
 		{
 			progressBar = new JISProgress(true);
@@ -30,8 +36,32 @@ package jis.ui.component
 		protected override function init():void
 		{
 			if(_Center == null) _Center = this.display;
-			progressBar.setCenterDisplay(_Center);
-			setProgressMaxWidth(this._Center.width);
+			
+			maskImage = new Image(Texture.fromColor(this._Center.width,this._Center.height));
+			maskedDisplayObject = new PixelMaskDisplayObject();
+			maskedDisplayObject.x = this._Center.x;
+			maskedDisplayObject.y = this._Center.y;
+			maskedDisplayObject.pivotX = this._Center.pivotX;
+			maskedDisplayObject.pivotY = this._Center.pivotY;
+			
+//			maskImage.pivotX = this._Center.pivotX;
+//			maskImage.pivotY = this._Center.pivotY;
+			
+			this._Center.x = 0;
+			this._Center.y = 0;
+			this._Center.pivotX = 0;
+			this._Center.pivotY = 0;
+			var childIndex:int = this._Center.parent.getChildIndex(this._Center);
+			maskedDisplayObject.name = this._Center.name;
+			this._Center.parent.addChildAt(maskedDisplayObject,childIndex);
+			this._Center.removeFromParent();
+			maskedDisplayObject.mask = maskImage;
+			maskedDisplayObject.addChild(this._Center);
+			
+			if(this._Center == this.display) this.display = maskedDisplayObject;
+			
+			progressBar.setCenterDisplay(maskImage);
+			setProgressMaxWidth(this.maskImage.width);
 		}
 		
 		/** 设置进度条最大宽度 */
@@ -56,6 +86,12 @@ package jis.ui.component
 			_Center = null;
 			progressBar.dispose();
 			progressBar = null;
+			
+			if(maskImage) maskImage.dispose();
+			maskImage = null;
+			if(maskedDisplayObject) maskedDisplayObject.dispose();
+			maskedDisplayObject = null;
+			
 			super.dispose();
 		}
 	}

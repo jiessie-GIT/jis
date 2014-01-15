@@ -1,9 +1,11 @@
 package jis.ui.component
 {
 	import jis.JISConfig;
+	import jis.ui.JISImageSprite;
 	import jis.ui.JISUIManager;
 	
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	
 	
 	/**
@@ -14,6 +16,8 @@ package jis.ui.component
 	public class JISUIWindowManager extends JISUIManager
 	{
 		public var _Close:JISButton;
+		protected var backImage:JISImageSprite;
+			
 		public function JISUIWindowManager()
 		{
 			_Close = new JISButton();
@@ -26,6 +30,12 @@ package jis.ui.component
 		{
 			super.setCurrDisplay(display);
 			if(_Close) _Close.addEventListener(JISButton.BUTTON_CLICK,close);
+			
+			if(backImage && this.display is DisplayObjectContainer)
+			{
+				(this.display as DisplayObjectContainer).addChildAt(backImage,0);
+			}
+			
 			close();
 		}
 		
@@ -44,8 +54,27 @@ package jis.ui.component
 		public override function dispose():void
 		{
 			if(_Close) _Close.removeEventListener(JISButton.BUTTON_CLICK,close);
-			_Close = null;
+			if(backImage)
+			{
+				backImage.removeFromParent(true);
+				backImage = null;
+			}
 			super.dispose();
+		}
+		//
+		public function setBackImageAssetSource(url:*):void
+		{
+			if(!backImage)
+			{
+				backImage = new JISImageSprite(url);
+				if(this.display is DisplayObjectContainer)
+				{
+					(this.display as DisplayObjectContainer).addChildAt(backImage,0);
+				}
+			}else
+			{
+				backImage.setAssetSource(url);
+			}
 		}
 	}
 }

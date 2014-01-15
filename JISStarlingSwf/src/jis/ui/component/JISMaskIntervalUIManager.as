@@ -10,6 +10,7 @@ package jis.ui.component
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.extensions.pixelmask.PixelMaskDisplayObject;
+	import starling.textures.Texture;
 
 	/**
 	 * 冷却遮罩
@@ -43,13 +44,7 @@ package jis.ui.component
 		
 		protected override function init():void
 		{
-			var sprite:Sprite = new Sprite();
-			sprite.graphics.beginFill(0x00);
-			sprite.graphics.drawRect(0,0,this.display.width,this.display.height);
-			sprite.graphics.endFill();
-			var bitmap:BitmapData = new BitmapData(this.display.width,this.display.height,true,0x00);
-			bitmap.draw(sprite,null,null,null,null,true);
-			maskImage = Image.fromBitmap(new Bitmap(bitmap));
+			maskImage = new Image(Texture.fromColor(this.display.width,this.display.height));
 			
 			height = this.display.height;
 			width = this.display.width;
@@ -59,7 +54,9 @@ package jis.ui.component
 			maskedDisplayObject.y = this.display.y;
 			this.display.x = 0;
 			this.display.y = 0;
-			this.display.parent.addChild(maskedDisplayObject);
+			var childIndex:int = this.display.parent.getChildIndex(this.display);
+			maskedDisplayObject.name = this.display.name;
+			this.display.parent.addChildAt(maskedDisplayObject,childIndex);
 			this.display.removeFromParent();
 			maskedDisplayObject.mask = maskImage;
 			maskedDisplayObject.addChild(this.display);
@@ -74,7 +71,6 @@ package jis.ui.component
 			maskImage.x = 0;
 			maskImage.height = height;
 			maskImage.width = width;
-			trace("设置时间",maskImage.x,maskImage.y,maskImage.width,maskImage.height);
 			maskedDisplayObject.visible = true;
 			if(_state == STATE_TOP_BOTTOM || _state == STATE_BOTTOM_TOP)
 			{
@@ -99,7 +95,6 @@ package jis.ui.component
 		
 		private function maskEndHandler():void
 		{
-			trace("时间结束");
 			maskedDisplayObject.visible = false;
 			if(_completeFunction)
 			{
@@ -124,7 +119,19 @@ package jis.ui.component
 		{
 			_transition = value;
 		}
-
+		
+		public function getMaskImage():Image { return maskImage; }
+		
+		public override function dispose():void
+		{
+			Starling.juggler.removeTweens(maskImage);
+			maskImage.dispose();
+			maskImage = null;
+			maskedDisplayObject.removeFromParent(true);
+			maskedDisplayObject = null;
+			_completeFunction = null;
+			super.dispose();
+		}
 
 	}
 }
