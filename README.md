@@ -5,6 +5,10 @@
 
 开发效率很高，针对复杂的UI也能轻松实现
 
+```ruby
+   销毁特性：通过组件进行引用的成员无需手动"XX=null"与无需手动"dispose()"，组件内部会在销毁的时候自动销毁已同步的成员。
+```
+
 ####教程地址：http://bbs.9ria.com/thread-275219-1-1.html
 ####StarlingSwf地址：https://github.com/zmLiu/StarlingFeathers
 ####Swf转换工具地址：https://github.com/zmLiu/StarlingSWF
