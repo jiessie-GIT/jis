@@ -25,11 +25,13 @@ package jis.ui.component
 		
 		private var maskedDisplayObject:PixelMaskDisplayObject;
 		private var maskImage:Image;
+		private var hasMask:Boolean;
 		
-		public function JISUIProgressManager(speedProgressHandler:Function = null)
+		public function JISUIProgressManager(speedProgressHandler:Function = null,hasMask:Boolean = true)
 		{
 			progressBar = new JISProgress(true);
 			if(speedProgressHandler != null) progressBar.setSpeedProgressHandler(speedProgressHandler);
+			this.hasMask = hasMask;
 			super();
 		}
 		
@@ -37,31 +39,38 @@ package jis.ui.component
 		{
 			if(_Center == null) _Center = this.display;
 			
-			maskImage = new Image(Texture.fromColor(this._Center.width,this._Center.height));
-			maskedDisplayObject = new PixelMaskDisplayObject();
-			maskedDisplayObject.x = this._Center.x;
-			maskedDisplayObject.y = this._Center.y;
-			maskedDisplayObject.pivotX = this._Center.pivotX;
-			maskedDisplayObject.pivotY = this._Center.pivotY;
+			if(this.hasMask)
+			{
+				maskImage = new Image(Texture.fromColor(this._Center.width,this._Center.height));
+				maskedDisplayObject = new PixelMaskDisplayObject();
+				maskedDisplayObject.x = this._Center.x;
+				maskedDisplayObject.y = this._Center.y;
+				maskedDisplayObject.pivotX = this._Center.pivotX;
+				maskedDisplayObject.pivotY = this._Center.pivotY;
+				
+				//			maskImage.pivotX = this._Center.pivotX;
+				//			maskImage.pivotY = this._Center.pivotY;
+				
+				this._Center.x = 0;
+				this._Center.y = 0;
+				this._Center.pivotX = 0;
+				this._Center.pivotY = 0;
+				var childIndex:int = this._Center.parent.getChildIndex(this._Center);
+				maskedDisplayObject.name = this._Center.name;
+				this._Center.parent.addChildAt(maskedDisplayObject,childIndex);
+				this._Center.removeFromParent();
+				maskedDisplayObject.mask = maskImage;
+				maskedDisplayObject.addChild(this._Center);
+				
+				if(this._Center == this.display) this.display = maskedDisplayObject;
+				progressBar.setCenterDisplay(maskImage);
+				setProgressMaxWidth(this.maskImage.width);
+			}else
+			{
+				progressBar.setCenterDisplay(_Center);
+				setProgressMaxWidth(this._Center.width);
+			}
 			
-//			maskImage.pivotX = this._Center.pivotX;
-//			maskImage.pivotY = this._Center.pivotY;
-			
-			this._Center.x = 0;
-			this._Center.y = 0;
-			this._Center.pivotX = 0;
-			this._Center.pivotY = 0;
-			var childIndex:int = this._Center.parent.getChildIndex(this._Center);
-			maskedDisplayObject.name = this._Center.name;
-			this._Center.parent.addChildAt(maskedDisplayObject,childIndex);
-			this._Center.removeFromParent();
-			maskedDisplayObject.mask = maskImage;
-			maskedDisplayObject.addChild(this._Center);
-			
-			if(this._Center == this.display) this.display = maskedDisplayObject;
-			
-			progressBar.setCenterDisplay(maskImage);
-			setProgressMaxWidth(this.maskImage.width);
 		}
 		
 		/** 设置进度条最大宽度 */
@@ -87,7 +96,11 @@ package jis.ui.component
 			progressBar.dispose();
 			progressBar = null;
 			
-			if(maskImage) maskImage.dispose();
+			if(maskImage)
+			{
+				maskImage.texture.dispose();
+				maskImage.dispose();
+			}
 			maskImage = null;
 			if(maskedDisplayObject) maskedDisplayObject.dispose();
 			maskedDisplayObject = null;

@@ -10,7 +10,7 @@ package jis.ui.component
 	
 	
 	/**
-	 * 数字跳动组件
+	 * 数字跳动组件，也可以纯粹当作JISCharQuadBatch管理组件使用
 	 * @author jiessie 2014-1-10
 	 */
 	public class JISNumVaryUIManager extends JISUIManager
@@ -36,6 +36,13 @@ package jis.ui.component
 			this.hAlign = hAlign;
 		}
 		
+		/**
+		 * 设置跳动的数字
+		 * @param startNum 开始数字
+		 * @param endNum 结束数字
+		 * @param time 从开始到结束的时间
+		 * @param endHandler 跳动完毕的回调
+		 */
 		public function setVaryNum(startNum:int,endNum:int = 0,time:Number = 1,endHandler:Function = null):void
 		{
 			currProgress = startNum;
@@ -48,6 +55,7 @@ package jis.ui.component
 			Starling.juggler.tween(this,time,{"currProgress":endNum,"onComplete":onTweenCompleteHandler});
 		}
 		
+		/** 直接设置显示的内容 */
 		public function setChar(char:*):void
 		{
 			getNumberCharacterQuadBatch().setChar(char);

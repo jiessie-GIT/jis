@@ -1,6 +1,7 @@
 package jis.util
 {
 	import starling.animation.Transitions;
+	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	
@@ -34,9 +35,9 @@ package jis.util
 			var oldY:int = display.y;
 			var oldAlpha:Number = display.alpha;
 			
-			function moveEnd():void
+			function moveEnd(hasBreak:Boolean = false):void
 			{
-				if(moveEndHandler) moveEndHandler.call();
+				if(!hasBreak && moveEndHandler) moveEndHandler.call();
 				display.x = oldX;
 				display.y = oldY;
 				display.alpha = oldAlpha;
@@ -74,7 +75,29 @@ package jis.util
 			display.alpha = alpha;
 			
 			if(transition == null || transition == "") transition = Transitions.EASE_IN;
-			Starling.juggler.tween(display,time,{"x":oldX,"y":oldY,"alpha":oldAlpha,"onComplete":moveEndHandler,"transition":transition,"delay":delay});
+			
+			function completeHandler(hasBreak:Boolean = false):void
+			{
+				if(!hasBreak && moveEndHandler) moveEndHandler.call();
+				display.x = oldX;
+				display.y = oldY;
+				display.alpha = oldAlpha;
+			}
+			
+			Starling.juggler.tween(display,time,{"x":oldX,"y":oldY,"alpha":oldAlpha,"onComplete":completeHandler,"transition":transition,"delay":delay});
+		}
+		
+		public static function removeTweenForList(tweenList:Array):void
+		{
+			for each(var infos:Array in tweenList)
+			{
+				var tween:Tween = Starling.juggler.removeTweens(infos[0]);
+				if(tween && tween.onComplete)
+				{
+					if(tween.onComplete.length == 1) tween.onComplete.call(null,true);
+					else tween.onComplete.apply(null,tween.onCompleteArgs);
+				}
+			}
 		}
 	}
 }

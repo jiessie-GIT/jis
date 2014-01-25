@@ -125,6 +125,7 @@ package jis.ui.component
 		public override function dispose():void
 		{
 			Starling.juggler.removeTweens(maskImage);
+			maskImage.texture.dispose();
 			maskImage.dispose();
 			maskImage = null;
 			maskedDisplayObject.removeFromParent(true);

@@ -31,7 +31,7 @@ package jis.ui.component
 		public static const ENABLE:int = 5;
 		public var _Text:TextField;
 		/** 当前状态 */
-		private var state:int = DEFULT;
+		protected var state:int = DEFULT;
 		private var lock:Boolean = false;
 		
 		private var isDown:Boolean = false;

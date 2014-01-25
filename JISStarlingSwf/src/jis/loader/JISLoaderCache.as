@@ -52,7 +52,7 @@ package jis.loader
 			var assetManager:AssetManager = getAssetManagerForOnlyId(onlyId);
 			if(assetManager)
 			{
-				trace("JISLoaderCache#dispose-->>id:",_urlToIdCache[onlyId]);
+				trace("JISLoaderCache#dispose-->>id:",onlyId,_urlToIdCache[onlyId]);
 				assetManager.purge();
 			}
 			delete _loadCache[onlyId];

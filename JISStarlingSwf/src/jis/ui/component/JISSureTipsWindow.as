@@ -53,11 +53,11 @@ package jis.ui.component
 		
 		public override function close(e:*=null):void
 		{
+			super.close();
 			if(e)
 			{
 				handlerComplete(false);
 			}
-			super.close();
 		}
 		
 		private function handlerComplete(hasSure:Boolean):void

@@ -3,6 +3,7 @@ package jis.loader
 	import flash.utils.ByteArray;
 	
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	
@@ -16,7 +17,7 @@ package jis.loader
 	{
 		private var assetManager:AssetManager;
 		private var loadProgressHandler:Function;
-		protected var assetOnlyId:int;
+		protected var assetOnlyId:int = -1;
 		
 		public function JISSimpleLoaderSprite()
 		{
@@ -25,6 +26,10 @@ package jis.loader
 		/** 设置一个资源地址,可以是一个url或者是一个file，也可以是一个Array，具体参考Starling->AssetManager#enqueue */
 		public function setAssetSource(source:*):void
 		{
+			if(assetOnlyId > 0)
+			{
+				disposeCurrLoaderAsset();
+			}
 			assetOnlyId = JISLoaderCache.startLoader(source,onLoadComplete,loadProgressHandler == null ? onLoadProgress:loadProgressHandler);
 		}
 		
@@ -34,6 +39,7 @@ package jis.loader
 			this.assetManager = assetManager;
 			loadProgressHandler = null;
 			loadComplete();
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		/** 该方法是加载完毕之后提供给子类的回调函数，防止父类内容处理不完善所以只提供该方法供子类实现 */
 		protected function loadComplete():void { }
@@ -52,6 +58,11 @@ package jis.loader
 			this.removeFromParent();
 			super.dispose();
 			assetManager = null;
+			disposeCurrLoaderAsset();
+		}
+		
+		protected function disposeCurrLoaderAsset():void
+		{
 			JISLoaderCache.disposeAssetManagerForOnlyId(assetOnlyId);
 		}
 		/** 是否加载完毕，判断条件为assetManager是否为null */

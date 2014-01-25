@@ -41,7 +41,7 @@ package jis.ui.component
 		{
 			this.reset();
 			if(char == "" || char == null) return;
-			var chars:Array = char.split("");
+			var chars:Array = (char+"").split("");
 			var w:int = 0;
 			for each(var str:String in chars)
 			{

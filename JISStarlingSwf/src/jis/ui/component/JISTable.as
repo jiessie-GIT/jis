@@ -387,6 +387,7 @@ package jis.ui.component
 			}
 			tabbedCellList = null;
 			currSelect = null;
+			_selectHandler = null;
 			super.dispose();
 		}
 		

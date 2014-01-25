@@ -43,12 +43,22 @@ package jis.ui.component
 		
 		/** 
 		 * 开始飘动
-		 * @param delay 延迟秒 
+		 * @param messageHerfName Swf连接名字
+		 * @oaram message 消息
+		 * @oaram completeHandler 飘动完毕回调
+		 * @oaram topMoveRange 向上飘起距离
+		 * @oaram scale 缩放
+		 * @oaram time 时间
+		 * @oaram delay 延迟
+		 * @oaram transition 缓动类型
+		 * @oaram stageWidth 舞台宽度,居中参考
+		 * @oaram stageHeight 舞台高度,居中参考
+		 * @oaram owner 容器，如果是starling的root并且没有设置scaleX的话,stageWidth与stageHeight建议使用stage.fullScreenWidth与stage.fullScreenHeight
 		 */
-		public function showMessage(messageHerfName:String,message:String,completeHandler:Function = null,topMoveRange:int = 50,scale:Number = 1,time:Number = 1,delay:Number = 0,transition:String = Transitions.EASE_IN):void
+		public function showMessage(messageHerfName:String,message:String,completeHandler:Function = null,topMoveRange:int = 50,scale:Number = 1,time:Number = 1,delay:Number = 0,transition:String = Transitions.EASE_IN,stageWidth:int = -1,stageHeight:int = -1,owner:DisplayObjectContainer = null):Sprite
 		{
 			var messageSprite:Sprite = source.createSprite(messageHerfName);
-			if(messageSprite == null) return;
+			if(messageSprite == null) return null;
 			var sText:starling.text.TextField = messageSprite.getChildByName("_Text") as starling.text.TextField;
 			if(sText)
 			{
@@ -71,13 +81,20 @@ package jis.ui.component
 				}
 			}
 			
-			messageSprite.x = Starling.current.root.width/2 - messageSprite.width/2;
-			messageSprite.y = Starling.current.root.height/2 - messageSprite.height/2;
-			Starling.juggler.tween(messageSprite,time,{"y":messageSprite.y - topMoveRange,"alpha":0.5,"transition":transition,"delay":delay,
+			stageWidth = stageWidth <= 0 ? Starling.current.root.width:stageWidth;
+			stageHeight = stageHeight <= 0 ? Starling.current.root.height:stageHeight;
+			owner = owner == null ? (Starling.current.root as DisplayObjectContainer):owner;
+			
+			messageSprite.x = stageWidth/2 - (messageSprite.width*scale)/2;
+			messageSprite.y = stageHeight/2 - (messageSprite.height*scale)/2;
+			
+			messageSprite.scaleX = messageSprite.scaleY = scale;
+			
+			Starling.juggler.tween(messageSprite,time,{"y":messageSprite.y - topMoveRange*scale,"alpha":0.5,"transition":transition,"delay":delay,
 				"onStart":
 				function():void
 				{
-					(Starling.current.root as DisplayObjectContainer).addChild(messageSprite);
+					owner.addChild(messageSprite);
 				}
 				,"onComplete":
 				function():void
@@ -86,6 +103,7 @@ package jis.ui.component
 					messageSprite.removeFromParent(true);
 				}
 			});
+			return messageSprite;
 		}
 		
 	}

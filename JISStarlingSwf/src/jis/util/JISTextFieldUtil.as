@@ -1,5 +1,6 @@
 package jis.util
 {
+	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Point;
 	import flash.text.TextField;
@@ -12,6 +13,7 @@ package jis.util
 	import feathers.core.ITextEditor;
 	
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	import starling.utils.HAlign;
 	
 	/**
@@ -165,6 +167,14 @@ package jis.util
 			}
 			return list;
 		}
-			
+		
+		public static function flashTextFieldToTexture(text:flash.text.TextField):Texture
+		{
+			text.width = Math.max(text.width,text.textWidth);
+			text.height = Math.max(text.height,text.textHeight)+3;
+			var bitmap:BitmapData = new BitmapData(text.width,text.height,true,0x00);
+			bitmap.draw(text);
+			return Texture.fromBitmapData(bitmap);
+		}
 	}
 }

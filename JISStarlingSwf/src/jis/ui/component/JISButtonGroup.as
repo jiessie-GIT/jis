@@ -128,9 +128,11 @@ package jis.ui.component
 				currSelectBtn.setSelected(false);
 			}
 			currSelectBtn = btn;
-			//将当前按钮设为不可点击
+			//单选
 			if(isRadio()) currSelectBtn.setSelected(true);
+			//复选
 			else if(isMulti()) currSelectBtn.setSelected(!currSelectBtn.isSelected());
+			
 			this.dispatchEvent(new Event(CLICK_BTN));
 			if(selectHandler != null)
 			{
@@ -165,6 +167,21 @@ package jis.ui.component
 				if(btn.getDisplay().name == name) return btn;
 			}
 			return null;
+		}
+		
+		/** 获得选择的按钮列表，如果是单选模式返回为当前选中，如果是复选则返回选中列表，普通模式返回null */
+		public function getSelectBtnList():Array
+		{
+			if(isMulti())
+			{
+				var result:Array = [];
+				for each(var btn:JISButton in btnList)
+				{
+					if(btn.isSelected()) result.push(btn);
+				}
+				return result;
+			}else if(isRadio()) return [currSelectBtn];
+			else return null;
 		}
 	}
 }

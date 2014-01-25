@@ -34,14 +34,14 @@ package jis.ui
 		{
 			if(source == null || source == "")
 			{
-				if(image) image.removeFromParent(true);
+				disposeImage();
 				imageName = null;
 				return;
 			}
 			var newImageName:String = getName(source);
 			if(newImageName == imageName) return;
 			imageName = newImageName;
-			if(image) image.removeFromParent(true);
+			disposeImage();
 			super.setAssetSource(source);
 		}
 		
@@ -50,6 +50,7 @@ package jis.ui
 			var texture:Texture = getAssetTextureArrayForName(imageName);
 			if(texture)
 			{
+				disposeImage();
 				image = new Image(texture);
 				this.addChild(image);
 				setIconWH(w,h);
@@ -100,9 +101,18 @@ package jis.ui
 		
 		public override function dispose():void
 		{
-			if(image) image.dispose();
-			image = null;
+			disposeImage();
 			super.dispose();
+		}
+		
+		private function disposeImage():void
+		{
+			if(image)
+			{
+				image.texture.dispose();
+				image.removeFromParent(true);
+			}
+			image = null;
 		}
 	}
 }
