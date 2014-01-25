@@ -1,6 +1,10 @@
 package
 {
+	import flash.events.TouchEvent;
 	import flash.filesystem.File;
+	import flash.text.TextField;
+	
+	import config.Config;
 	
 	import jis.ui.component.JISButton;
 	import jis.ui.component.JISButtonGroup;
@@ -11,10 +15,14 @@ package
 	import jis.ui.component.JISTweenSwitchCuttingButtonGroup;
 	import jis.ui.component.JISUIMultipleProgressManager;
 	import jis.ui.component.JISUIWindow;
+	import jis.util.JISEventUtil;
 	
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	
 	/**
@@ -45,6 +53,8 @@ package
 		
 		private var currPage:int = 0;
 		
+		private var messageText:TextField;
+		
 		public function JISMainUIWindow()
 		{
 			//自定义管理类需要在setAssetSource之前初始化
@@ -63,7 +73,7 @@ package
 			_MultipleProgress = new JISUIMultipleProgressManager("_Progress_");
 			
 			super("spr_TestWindow", "test");
-			setAssetSource(File.applicationDirectory.resolvePath("assets/ui/test/"));
+			setAssetSource(["../assets/ui/test/test.bytes","../assets/ui/test/test.png","../assets/ui/test/test.xml"]);//File.applicationDirectory.resolvePath("assets/ui/test/"));
 		}
 		
 		/** init会在资源加载完毕并且建立引用之后调用 */
@@ -101,6 +111,81 @@ package
 			_MultipleProgress.setProgressNum(14000);
 			
 			_TweenSwitchCutting.setIdentificationForName("_TweenSwitch_4");
+			
+			messageText = new TextField();
+			messageText.width = 300;
+			messageText.height = 300;
+			messageText.mouseEnabled = false;
+			messageText.multiline = true;
+			messageText.wordWrap = true;
+			messageText.textColor = 0xFFFFFF;
+			
+			Starling.current.nativeStage.addChild(messageText);
+			
+//			this.addEventListener(TouchEvent.TOUCH,onTouch);
+			_ProgressTest.getDisplay().addEventListener(starling.events.TouchEvent.TOUCH,onTouch);
+			
+			JISEventUtil.addDisplayDownHandler(_ProgressTest.getDisplay(),onClick);
+		}
+		
+		private function onClick(e:*):void
+		{
+			_ProgressTest.getDisplay().addEventListener(starling.events.TouchEvent.TOUCH,onTouch);
+		}
+		
+		private var messageList:Array = [];
+		
+//		private function onTouch(e:starling.events.TouchEvent):void
+//		{
+//			var touch:Touch = e.getTouch(_ProgressTest.getDisplay(),TouchPhase.BEGAN);
+//			if(touch)
+//			{
+//				Starling.current.nativeStage.addEventListener(flash.events.TouchEvent.TOUCH_ROLL_OVER,onTouchOverHandler);
+//				Starling.current.nativeStage.addEventListener(flash.events.TouchEvent.TOUCH_ROLL_OUT,onTouchOutHandler);
+//			}
+//		}
+//		
+//		private function onTouchOverHandler(e:flash.events.TouchEvent):void
+//		{
+//			showMessage("move x:"+e.stageX+" y:"+e.stageY);
+//		}
+//		
+//		private function onTouchOutHandler(e:flash.events.TouchEvent):void
+//		{
+//			showMessage("out x:"+e.stageX+" y:"+e.stageY);
+//			Starling.current.nativeStage.removeEventListener(flash.events.TouchEvent.TOUCH_ROLL_OVER,onTouchOverHandler);
+//			Starling.current.nativeStage.removeEventListener(flash.events.TouchEvent.TOUCH_ROLL_OUT,onTouchOutHandler);
+//		}
+		
+		private function onTouch(e:starling.events.TouchEvent):void
+		{
+			var touch:Touch = e.getTouch(this);
+			if(touch)
+			{
+//				showMessage("触发数量"+e.touches.length);
+//				for each(var otherTouch:Touch in e.touches) showMessage("触发："+otherTouch.target+"  "+otherTouch.phase);
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					showMessage("x:"+touch.globalX+" y:"+touch.globalY);
+					_ProgressTest.getDisplay().removeEventListener(starling.events.TouchEvent.TOUCH,onTouch);
+				}else if(touch.phase == TouchPhase.MOVED)
+				{
+					showMessage("move -> x:"+touch.globalX+" y:"+touch.globalY);
+				}
+			}
+			
+		}
+		
+		public function showMessage(message:String):void
+		{
+			trace(message);
+			messageList.push(message);
+			if(messageList.length >= 10)
+			{
+				messageList.shift();
+			}
+			messageText.htmlText = messageList.join("\n");;
+			//			messageText.scrollV = messageText.maxScrollV; 
 		}
 		
 		private function onBtnClickHandler(e:Event):void

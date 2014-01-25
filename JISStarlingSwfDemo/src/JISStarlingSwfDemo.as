@@ -5,6 +5,8 @@ package
 	import flash.display.StageOrientation;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.ui.Multitouch;
+	import flash.ui.MultitouchInputMode;
 	
 	import lzm.starling.swf.Swf;
 	
@@ -28,12 +30,17 @@ package
 			//设置线性布局的朝向，可取horizontal（水平）和vertical（垂直）两种排列方式
 			stage.setOrientation(StageOrientation.ROTATED_RIGHT);
 			
+			if(Multitouch.supportsTouchEvents)
+			{
+				Multitouch.inputMode = MultitouchInputMode.NONE;
+			}
+			
 			this.addEventListener(Event.ADDED_TO_STAGE,onAddToStage);
 		}
 		
 		private function onAddToStage(e:Event):void
 		{
-			Swf.init(this.stage);
+			Starling.multitouchEnabled = true;
 			var star:Starling = new Starling(JISStarlingSwfMain,this.stage);
 			star.start();
 		}
