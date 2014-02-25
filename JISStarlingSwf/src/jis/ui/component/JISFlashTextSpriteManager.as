@@ -10,6 +10,8 @@ package jis.ui.component
 	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
+	import starling.display.Sprite;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	
 	/**
@@ -18,7 +20,7 @@ package jis.ui.component
 	 */
 	public class JISFlashTextSpriteManager extends JISUIManager
 	{
-		private var textField:TextField;
+		private var textField:flash.text.TextField;
 		private var image:Image;
 		
 		public function JISFlashTextSpriteManager()
@@ -26,22 +28,39 @@ package jis.ui.component
 			super();
 		}
 		
-		public function setTextField(textField:TextField):void
+		protected override function init():void
 		{
-			this.textField = textField;
+			if(this.display is starling.text.TextField)
+			{
+				var sprite:Sprite = new Sprite();
+				sprite.name = this.display.name;
+				sprite.x = this.display.x;
+				sprite.y = this.display.y;
+				this.display.parent.addChild(sprite);
+				setTextField(JISTextFieldUtil.stlTextConvertFlashText(this.display as starling.text.TextField,null,1,true,false));
+				this.display = sprite;
+			}
 		}
 		
-		public function createTextField(fontName:String = null,fontSize:int = 12,color:uint = 0x00,autoSize:String = TextFieldAutoSize.LEFT,leading:Object = null):void
+		public function setTextField(textField:flash.text.TextField):void
 		{
-			textField = new TextField();
+			this.textField = textField;
+			this.textField.multiline = true;
+			this.textField.wordWrap = true;
+		}
+		
+		public function createTextField(fontName:String = null,fontSize:int = 12,color:uint = 0x00,autoSize:String = TextFieldAutoSize.LEFT,leading:Object = null,w:int = -1,h:int = -1):void
+		{
+			var textField:flash.text.TextField = new flash.text.TextField();
 			textField.textColor = color;
 			textField.autoSize = autoSize;
 			var textFormat:TextFormat = new TextFormat(fontName,fontSize,color);
 			textFormat.leading = leading;
 			textField.defaultTextFormat = textFormat;
 			textField.setTextFormat(textFormat);
-			textField.multiline = true;
-			textField.wordWrap = true;
+			if(w > 0) textField.width = w;
+			if(h > 0) textField.height = h;
+			setTextField(textField);
 		}
 		
 		public function set htmlText(value:String):void
@@ -71,7 +90,7 @@ package jis.ui.component
 			}
 		}
 		
-		public function getTextField():TextField
+		public function getTextField():flash.text.TextField
 		{
 			if(this.textField == null)
 			{

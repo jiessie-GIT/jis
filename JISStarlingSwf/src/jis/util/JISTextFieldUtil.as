@@ -43,14 +43,15 @@ package jis.util
 		 * @param textOwner 转换完毕后的文本框添加的显示容器
 		 * @param scale 文本框的缩放比例
 		 * @param hasDispose 是否销毁旧的文本框
+		 * @param hasUpdateAutoSize 是否转换starling text对齐方式
 		 * @return 转换完毕的文本框，由于居中对齐会导致文本框变窄，导致无法点击，所以取消居中对齐
 		 */
-		public static function stlTextConvertFlashText(textField:starling.text.TextField,textOwner:DisplayObjectContainer,scale:Number = 1,hasDispose:Boolean = true,hasUpdateAutoSize:Boolean = true):flash.text.TextField
+		public static function stlTextConvertFlashText(textField:starling.text.TextField,textOwner:DisplayObjectContainer = null,scale:Number = 1,hasDispose:Boolean = true,hasUpdateAutoSize:Boolean = true):flash.text.TextField
 		{
 			var fInputText:flash.text.TextField = new flash.text.TextField();
 			var point:Point = textField.localToGlobal(new Point());
-			fInputText.x = point.x*scale;
-			fInputText.y = point.y*scale;
+			fInputText.x = textField.stage ? point.x:point.x*scale;
+			fInputText.y = textField.stage ? point.y:point.y*scale;
 			fInputText.textColor = textField.color;
 			fInputText.text = textField.text;
 			fInputText.autoSize = hasUpdateAutoSize ? convertSTLAutoSizeToFlash(textField.hAlign):TextFieldAutoSize.NONE;

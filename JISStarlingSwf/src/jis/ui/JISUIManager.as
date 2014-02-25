@@ -2,7 +2,6 @@ package jis.ui
 {
 	import jis.util.JISManagerSpriteUtil;
 	
-	import lzm.starling.swf.components.ISwfComponent;
 	import lzm.starling.swf.display.SwfSprite;
 	
 	import starling.display.DisplayObject;
@@ -14,7 +13,7 @@ package jis.ui
 	 * ui管理，该类管理的UI不会进行addChild操作，只会当作引用来进行管理
 	 * @author jiessie 2013-11-19
 	 */
-	public class JISUIManager extends EventDispatcher implements JISISpriteManager,ISwfComponent
+	public class JISUIManager extends EventDispatcher implements JISISpriteManager
 	{
 		protected var display:DisplayObject;
 		/** 附带参数，无实际意义，只是方便使用 */

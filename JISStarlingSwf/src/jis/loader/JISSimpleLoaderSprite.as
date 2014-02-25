@@ -30,7 +30,14 @@ package jis.loader
 			{
 				disposeCurrLoaderAsset();
 			}
-			assetOnlyId = JISLoaderCache.startLoader(source,onLoadComplete,loadProgressHandler == null ? onLoadProgress:loadProgressHandler);
+			
+			if(hasUseRepeatLoader())
+			{
+				assetOnlyId = JISRepeatLoaderCache.startLoader(source,onLoadComplete,loadProgressHandler == null ? onLoadProgress:loadProgressHandler);
+			}else
+			{
+				assetOnlyId = JISLoaderCache.startLoader(source,onLoadComplete,loadProgressHandler == null ? onLoadProgress:loadProgressHandler);
+			}
 		}
 		
 		/** 资源加载完毕 */
@@ -63,9 +70,17 @@ package jis.loader
 		
 		protected function disposeCurrLoaderAsset():void
 		{
-			JISLoaderCache.disposeAssetManagerForOnlyId(assetOnlyId);
+			if(hasUseRepeatLoader())
+			{
+				JISRepeatLoaderCache.disposeAssetManagerForOnlyId(assetOnlyId);
+			}else
+			{
+				JISLoaderCache.disposeAssetManagerForOnlyId(assetOnlyId);
+			}
 		}
 		/** 是否加载完毕，判断条件为assetManager是否为null */
 		public function hasLoadOK():Boolean { return this.assetManager != null; }
+		/** 是否使用检测是否已存在重复资源的方式进行加载，如果是图片的话不建议多个图片使用同一个资源，因为你无法控制好什么时候释放你的图片资源 */
+		protected function hasUseRepeatLoader():Boolean { return false; }
 	}
 }

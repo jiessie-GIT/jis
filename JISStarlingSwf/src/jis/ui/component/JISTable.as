@@ -439,6 +439,7 @@ package jis.ui.component
 						}
 					}
 					cell.setValue(data);
+					cell.selected(false);
 				}else
 				{
 					//如果旧的已存在，则使用旧的,将旧的从已有的删除，放置到新的列表当中。

@@ -3,7 +3,6 @@ package jis.ui.component
 	import flash.utils.Dictionary;
 	
 	import jis.ui.JISUIManager;
-	import jis.ui.JISUISprite;
 	
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
@@ -26,7 +25,6 @@ package jis.ui.component
 		{
 			super();
 			_TagBtns = new JISButtonGroup();
-			_TagBtns.setSelectBtnHandler(onSelectBtnHandler);
 		}
 		
 		protected override function init():void
@@ -36,11 +34,22 @@ package jis.ui.component
 			{
 				onSelectBtnHandler(_TagBtns.getCurrentSelectBtn());
 			}
+			_TagBtns.setSelectBtnHandler(onSelectBtnHandler);
+		}
+		
+		public function setBtnList(btnList:Array):void
+		{
+			_TagBtns.setBtnList(btnList);
+			_TagBtns.setSelectBtnHandler(onSelectBtnHandler);
 		}
 		
 		protected function onSelectBtnHandler(btn:JISButton):void
 		{
-			if(currDisplayObject && _InfoContainer.contains(currDisplayObject)) _InfoContainer.removeChild(currDisplayObject);
+			if(currDisplayObject && _InfoContainer.contains(currDisplayObject))
+			{
+				_InfoContainer.removeChild(currDisplayObject);
+				if(currDisplayObject is JISITagCell) (currDisplayObject as JISITagCell).closeToTag();
+			}
 			currDisplayObject = btnNameClassInfos[btn.getDisplay().name];
 			if(currDisplayObject == null && this.createTagDisplayHandler != null)
 			{
@@ -50,6 +59,7 @@ package jis.ui.component
 			if(currDisplayObject)
 			{
 				_InfoContainer.addChild(currDisplayObject);
+				if(currDisplayObject is JISITagCell) (currDisplayObject as JISITagCell).showToTag();
 			}
 		}
 		
