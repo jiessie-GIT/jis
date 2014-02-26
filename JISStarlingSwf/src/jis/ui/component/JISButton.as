@@ -55,7 +55,7 @@ package jis.ui.component
 			if(type == TouchPhase.BEGAN)
 			{
 				if(!hasCheckBox) setState(CLICK);
-				else setState(state == DEFULT ? SELECTED:DEFULT);
+				else setState(state == DEFULT ? SELECTED:DEFULT,true);
 				isDown = true;
 			}else if(!hasCheckBox)
 			{
