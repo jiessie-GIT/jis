@@ -1,7 +1,5 @@
 package jis.ui.component
 {
-	import flash.text.TextField;
-	
 	import jis.ui.JISUIMovieClipManager;
 	import jis.util.JISEventUtil;
 	
@@ -9,6 +7,7 @@ package jis.ui.component
 	
 	import starling.events.Event;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	
 	/**
 	 * 按钮，实际上就是包装了一个SwfMovieClip，每帧代表的含义参考静态DEFULT、GLIDE、CLICK、SELECTED、ENABLE所代表的帧数
@@ -35,10 +34,13 @@ package jis.ui.component
 		private var lock:Boolean = false;
 		
 		private var isDown:Boolean = false;
+		/** 是否复选按钮模式 */
+		private var hasCheckBox:Boolean = false;
 		
-		public function JISButton(movie:SwfMovieClip = null)
+		public function JISButton(movie:SwfMovieClip = null,hasCheckBox:Boolean = false)
 		{
 			super();
+			this.hasCheckBox = hasCheckBox;
 			if(movie) setCurrDisplay(movie);
 		}
 		
@@ -52,9 +54,10 @@ package jis.ui.component
 		{
 			if(type == TouchPhase.BEGAN)
 			{
-				setState(CLICK);
+				if(!hasCheckBox) setState(CLICK);
+				else setState(state == DEFULT ? SELECTED:DEFULT);
 				isDown = true;
-			}else
+			}else if(!hasCheckBox)
 			{
 				setState(DEFULT);
 				if(isDown) this.dispatchEvent(new Event(BUTTON_CLICK));
