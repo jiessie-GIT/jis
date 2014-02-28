@@ -29,6 +29,7 @@ package jis.ui.component
 		/** 不可用状态 */
 		public static const ENABLE:int = 5;
 		public var _Text:TextField;
+		public var _BackMovie:SwfMovieClip;
 		/** 当前状态 */
 		protected var state:int = DEFULT;
 		private var lock:Boolean = false;
@@ -108,7 +109,7 @@ package jis.ui.component
 					return;
 				}
 				
-				if(this.movie) this.movie.gotoAndStop(Math.min(state-1,this.movie.totalFrames-1));
+				if(getMovieClip()) getMovieClip().gotoAndStop(Math.min(state-1,getMovieClip().totalFrames-1));
 				this.state = state;
 			}
 		}
@@ -118,7 +119,7 @@ package jis.ui.component
 		{
 			if(!this.lock || lock)
 			{
-				if(this.movie) this.movie.gotoAndStop(Math.min(state-1,this.movie.totalFrames-1));
+				if(getMovieClip()) getMovieClip().gotoAndStop(Math.min(state-1,getMovieClip().totalFrames-1));
 				this.state = state;
 			}
 			this.lock = lock;
@@ -132,6 +133,8 @@ package jis.ui.component
 		
 		/** 是否选中状态 */
 		public function isSelected():Boolean { return this.state == SELECTED; }
+		/** 获得影片剪辑 */
+		private function getMovieClip():SwfMovieClip { return _BackMovie ? _BackMovie:movie; }
 		
 		public override function dispose():void
 		{

@@ -3,6 +3,7 @@ package jis.util
 	import flash.utils.Dictionary;
 	
 	import starling.display.DisplayObject;
+	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
@@ -23,13 +24,15 @@ package jis.util
 			{
 				for each(var touchType:String in touchTypes)
 				{
-					if(e.getTouch(display,touchType))
+					var touch:Touch = e.getTouch(display,touchType);
+					if(touch)
 					{
 						if(handler != null)
 						{
 							if(handler.length == 0) handler.call();
 							else if(handler.length == 1) handler.call(null,touchType);
 							else if(handler.length == 2) handler.call(null,touchType,display);
+							else if(handler.length == 3) handler.call(null,touchType,display,touch);
 						}
 					}
 				}
