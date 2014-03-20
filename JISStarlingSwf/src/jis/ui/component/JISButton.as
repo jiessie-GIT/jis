@@ -5,6 +5,7 @@ package jis.ui.component
 	
 	import lzm.starling.swf.display.SwfMovieClip;
 	
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
@@ -38,6 +39,8 @@ package jis.ui.component
 		/** 是否复选按钮模式 */
 		private var hasCheckBox:Boolean = false;
 		
+		private var _clickHandler:Function;
+		
 		public function JISButton(movie:SwfMovieClip = null,hasCheckBox:Boolean = false)
 		{
 			super();
@@ -61,7 +64,11 @@ package jis.ui.component
 			}else if(!hasCheckBox)
 			{
 				setState(DEFULT);
-				if(isDown) this.dispatchEvent(new Event(BUTTON_CLICK));
+				if(isDown)
+				{
+					this.dispatchEvent(new Event(BUTTON_CLICK));
+					if(this._clickHandler != null) this._clickHandler.call();
+				}
 				isDown = false;
 			}
 		}
@@ -139,8 +146,13 @@ package jis.ui.component
 		public override function dispose():void
 		{
 			JISEventUtil.removeDisplayClickEventHandler(display);
-			_Text = null;
+			this._clickHandler = null;
 			super.dispose();
 		}
+		
+		/** 检查显示对象是否可以创建该类型按钮 */
+		public function checkHasButton(display:DisplayObject):Boolean { return display is SwfMovieClip; }
+		
+		public function setClickHandler(handler:Function):void { this._clickHandler = handler; }
 	}
 }

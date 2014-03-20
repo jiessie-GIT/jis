@@ -86,15 +86,24 @@ package jis.ui.component
 		
 		public override function dispose():void
 		{
-			time.stop();
-			time.removeEventListener(TimerEvent.TIMER,onTimerHandler);
-			time.removeEventListener(TimerEvent.TIMER_COMPLETE,onTimerCompleteHandler);
+			if(time)
+			{
+				time.stop();
+				time.removeEventListener(TimerEvent.TIMER,onTimerHandler);
+				time.removeEventListener(TimerEvent.TIMER_COMPLETE,onTimerCompleteHandler);
+			}
 			time = null;
 			_completeHandler = null;
 			swfSource = null;
-			numCharQuadBatch.dispose();
+			if(numCharQuadBatch) numCharQuadBatch.dispose();
 			numCharQuadBatch = null;
 			super.dispose();
+		}
+		
+		public function clearTimeInfo():void
+		{
+			getNumberCharacterQuadBatch().setChar("");
+			stop();
 		}
 	}
 }

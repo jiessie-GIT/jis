@@ -3,6 +3,7 @@ package jis.loader
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
+	import starling.core.Starling;
 	import starling.utils.AssetManager;
 	
 	/**
@@ -32,7 +33,16 @@ package jis.loader
 			var id:int = getAssetIDForLoader(loader);
 			if(id > 0)
 			{
-				if(id in _loadCache) loadComplentHandler.call(null,_loadCache[id]);
+				if(id in _loadCache) 
+				{
+					Starling.juggler.delayCall(
+						function():void
+						{
+							loadComplentHandler.call(null,_loadCache[id]);
+						}
+						,0.1
+					);
+				}
 				else if(id in _currLoadCache) (_currLoadCache[id] as Array).push([loadComplentHandler,loadProgressHandler]);
 			}else
 			{
@@ -95,7 +105,15 @@ package jis.loader
 		/** 获得加载地址对应的ID，如果已加载则会返回大于0的数字，否则返回0 */ 
 		public static function getAssetIDForLoader(loader:*):int
 		{
-			return _urlToIdCache[getAssetUrl(loader)];
+			var loaderUrl:String = getAssetUrl(loader);
+			for(var url:String in _urlToIdCache)
+			{
+				if(url.indexOf(loaderUrl) >= 0)
+				{
+					return _urlToIdCache[url];
+				}
+			}
+			return -1;
 		}
 		
 		/**
@@ -113,6 +131,14 @@ package jis.loader
 			}else if(getQualifiedClassName(loader) == "flash.filesystem::File") return loader["url"];
 			
 			return loader;
+		}
+		
+		/** 清空已加载所有资源 */
+		public static function clearAllAsset():void
+		{
+			var ids:Array = [];
+			for(var id:* in _loadCache) ids.push(id);
+			for each(var disposeId:* in ids) disposeAssetManagerForOnlyId(id);
 		}
 	}
 }

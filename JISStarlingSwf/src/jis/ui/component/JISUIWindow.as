@@ -5,6 +5,7 @@ package jis.ui.component
 	import jis.ui.JISUISprite;
 	
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	
 	
 	/**
@@ -15,14 +16,16 @@ package jis.ui.component
 	{
 		public var _Close:JISButton;
 		protected var backImage:JISImageSprite;
+		private var owner:DisplayObjectContainer;
 		
 		/**
 		 * @param swfHrefName swf中导出连接名，如：“spr_MainUI”
 		 * @param assetGetName swf文件名，如：加载的main.bytes、main.png、main.xml或者main文件夹的话，该值为“main”
 		 */
-		public function JISUIWindow(swfHrefName:String, assetGetName:String)
+		public function JISUIWindow(swfHrefName:String, assetGetName:String,owner:DisplayObjectContainer = null)
 		{
 			_Close = new JISButton();
+			this.owner = owner;
 			super(swfHrefName, assetGetName);
 		}
 		
@@ -42,7 +45,8 @@ package jis.ui.component
 		/** 将会添加到JISConfig.windowStage显示列表中 */
 		public function show():void
 		{
-			if(JISConfig.windowStage) JISConfig.windowStage.addChild(this);
+			if(this.owner) this.owner.addChild(this);
+			else if(JISConfig.windowStage) JISConfig.windowStage.addChild(this);
 		}
 		
 		public override function dispose():void
@@ -53,6 +57,7 @@ package jis.ui.component
 				backImage.removeFromParent(true);
 				backImage = null;
 			}
+			this.owner = null;
 			super.dispose();
 		}
 		

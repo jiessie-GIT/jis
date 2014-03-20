@@ -1,5 +1,6 @@
 package jis.ui.component
 {
+	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.text.TextField;
 	
@@ -16,11 +17,11 @@ package jis.ui.component
 		private var _completeHandler:Function;
 		private var text:String;
 		
-		public function JISSureTipsWindow(swfHrefName:String, assetGetName:String)
+		public function JISSureTipsWindow(swfHrefName:String, assetGetName:String,owner:DisplayObjectContainer = null)
 		{
 			_YesBtn = new JISButton();
 			_NoBtn = new JISButton();
-			super(swfHrefName, assetGetName);
+			super(swfHrefName, assetGetName,owner);
 		}
 		
 		protected override function init():void

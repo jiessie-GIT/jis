@@ -61,7 +61,7 @@ package jis.ui.component
 			
 			for each(var displayChild:DisplayObject in JISManagerSpriteUtil.getDisplayCOntainerChlids(this.display as DisplayObjectContainer))
 			{
-				if(displayChild.name != null && displayChild.name.indexOf(spliceChar) >= 0)
+				if(displayChild.name != null && (spliceChar == "" || displayChild.name.indexOf(spliceChar) >= 0))
 				{
 					var displaySpliceChar:String = displayChild.name.substring(spliceChar.length);
 					var movieClip:JISUIManager = getClassInstance();

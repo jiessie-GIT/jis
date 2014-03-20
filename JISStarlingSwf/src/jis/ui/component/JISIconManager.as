@@ -20,9 +20,9 @@ package jis.ui.component
 		public var _MaskImage:DisplayObject;
 		
 		private var image:JISImageSprite;
-		public function JISIconManager()
+		public function JISIconManager(hasImageCenter:Boolean = false)
 		{
-			image = new JISImageSprite();
+			image = new JISImageSprite(null,hasImageCenter);
 			super();
 		}
 		

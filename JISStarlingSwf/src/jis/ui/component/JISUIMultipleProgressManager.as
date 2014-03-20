@@ -98,7 +98,7 @@ package jis.ui.component
 		public function set currProgress(value:Number):void
 		{
 			_currProgress = value;
-			
+			if(this.display == null) return;
 			//当前剩余条数
 			currMultiple = _currProgress/progressNum;
 			

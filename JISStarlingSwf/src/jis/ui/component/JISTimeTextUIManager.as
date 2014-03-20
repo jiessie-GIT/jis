@@ -45,6 +45,7 @@ package jis.ui.component
 		
 		public override function dispose():void
 		{
+			stop();
 			super.dispose();
 			if(_TimeText) _TimeText = null;
 		}
@@ -90,7 +91,7 @@ package jis.ui.component
 		/** 停止计时 */
 		public function stop():void
 		{
-			timer.stop();
+			if(timer) timer.stop();
 			if(_TimeText) _TimeText.text = defultText;
 		}
 		/** 获得剩余时间 */

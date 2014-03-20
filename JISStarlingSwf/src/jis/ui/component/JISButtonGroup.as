@@ -34,8 +34,11 @@ package jis.ui.component
 		
 		private var state:String = STAGE_RADIO;
 		
-		public function JISButtonGroup(list:Array = null)
+		private var createBtnClass:Class;
+		
+		public function JISButtonGroup(list:Array = null,btnClass:Class = null)
 		{
+			createBtnClass = btnClass;
 			if(list)
 			{
 				setBtnList(list);
@@ -49,13 +52,20 @@ package jis.ui.component
 			//所有movieClip中的成员都做为按钮进行管理
 			for(var i:int = 0;i<container.numChildren;i++)
 			{
-				var display:DisplayObject = container.getChildAt(i);
-				if(display is SwfMovieClip)
-				{
-					btnList.push(new JISButton(display as SwfMovieClip));
-				}
+				var btn:JISButton = createBtn(container.getChildAt(i));
+				if(btn) btnList.push(btn);
 			}
 			setBtnList(btnList);
+		}
+		
+		protected function createBtn(display:DisplayObject):JISButton
+		{
+			var result:JISButton;
+			if(createBtnClass) result = new createBtnClass();
+			else result = new JISButton();
+			if(!result.checkHasButton(display)) return null;
+			result.setCurrDisplay(display);
+			return result;
 		}
 		
 		/** 设置按钮列表，按钮必须是LButton或者他的子类 */

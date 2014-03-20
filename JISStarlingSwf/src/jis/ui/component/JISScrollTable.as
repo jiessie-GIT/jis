@@ -88,6 +88,7 @@ package jis.ui.component
 			_viewPort2.height = height;
 			
 			var itemViewPort:Rectangle = new Rectangle();
+			var index:int = 0;
 			for each(var tableCell:JISITableCell in this.getTable().getTabbedList())
 			{
 				itemViewPort.x = tableCell.getDisplay().x;
@@ -95,7 +96,24 @@ package jis.ui.component
 				itemViewPort.width = tableCell.getDisplay().width;
 				itemViewPort.height = tableCell.getDisplay().height;
 				
-				tableCell.getDisplay().visible = CollisionUtils.isIntersectingRect(_viewPort2,itemViewPort);
+				index++;
+				
+				if(CollisionUtils.isIntersectingRect(_viewPort2,itemViewPort))
+				{
+					if(tableCell.getDisplay().parent == null)
+					{
+						this.getTable().addChild(tableCell.getDisplay());
+					}
+				}else
+				{
+					//第一个与最后一个不会移除
+					if(index > 1 && index < this.getTable().getTabbedList().length)
+					{
+						tableCell.getDisplay().removeFromParent();
+					}
+				}
+					
+//				tableCell.getDisplay().visible = CollisionUtils.isIntersectingRect(_viewPort2,itemViewPort);
 			}
 			
 		}
