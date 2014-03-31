@@ -19,6 +19,10 @@ package jis.ui.component
 		
 		private var currNum:int;
 		private var maxNum:int;
+		/** 最小数量 */
+		private var minNum:int = 0;
+		
+		private var changeHandler:Function;
 		
 		public function JISNumberOperationUIManager()
 		{
@@ -70,18 +74,33 @@ package jis.ui.component
 			updateNumText();
 		}
 		
+		public function setMinNum(minNum:int):void
+		{
+			this.minNum = minNum;
+			updateNumText();
+		}
+		
 		private function updateNumText():void
 		{
 			currNum = Math.min(currNum,maxNum);
-			currNum = Math.max(0,currNum);
+			currNum = Math.max(minNum,currNum);
 			_NumText.text = currNum+"/"+maxNum;
 			this.dispatchEvent(new Event(Event.CHANGE));
+			if(this.changeHandler)
+			{
+				this.changeHandler.call(null,currNum);
+			}
 		}
 		
 		public function setCurrNum(currNum:int):void
 		{
 			this.currNum = currNum;
 			updateNumText();
+		}
+		
+		public function setChangeHandler(handler:Function):void
+		{
+			this.changeHandler = handler;
 		}
 		
 		public function getCurrNum():int { return currNum; }
@@ -91,6 +110,7 @@ package jis.ui.component
 			_DecNumBtn.removeEventListener(JISButton.BUTTON_CLICK,onDecNumHandler);
 			_IncNumBtn.removeEventListener(JISButton.BUTTON_CLICK,onIncNumHandler);
 			_MaxNumBtn.removeEventListener(JISButton.BUTTON_CLICK,onMaxNumHandler);
+			this.changeHandler = null;
 			super.dispose();
 		}
 	}

@@ -138,10 +138,13 @@ package jis.ui.component
 				currSelectBtn.setSelected(false);
 			}
 			currSelectBtn = btn;
-			//单选
-			if(isRadio()) currSelectBtn.setSelected(true);
-			//复选
-			else if(isMulti()) currSelectBtn.setSelected(!currSelectBtn.isSelected());
+			if(currSelectBtn)
+			{
+				//单选
+				if(isRadio()) currSelectBtn.setSelected(true);
+					//复选
+				else if(isMulti()) currSelectBtn.setSelected(!currSelectBtn.isSelected());
+			}
 			
 			this.dispatchEvent(new Event(CLICK_BTN));
 			if(selectHandler != null)

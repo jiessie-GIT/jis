@@ -3,6 +3,7 @@ package jis.util
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Point;
+	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
@@ -10,7 +11,10 @@ package jis.util
 	
 	import feathers.controls.TextInput;
 	import feathers.controls.text.StageTextTextEditor;
+	import feathers.controls.text.TextFieldTextEditor;
+	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.ITextEditor;
+	import feathers.core.ITextRenderer;
 	
 	import starling.text.TextField;
 	import starling.textures.Texture;
@@ -77,7 +81,7 @@ package jis.util
 			else return TextFieldAutoSize.CENTER;
 		}
 		
-		public static function stlTextConvertTextInput(textField:starling.text.TextField,hasDispose:Boolean = true):TextInput
+		public static function stlTextConvertTextInput(textField:starling.text.TextField,hasDispose:Boolean = true,maxChars:int = -1,hasPassWord:Boolean = false):TextInput
 		{
 			var textInput:TextInput = new TextInput();
 			textInput.text = textField.text;
@@ -85,18 +89,41 @@ package jis.util
 			textInput.height = textField.height;
 			textInput.x = textField.x;
 			textInput.y = textField.y;
+			textInput.displayAsPassword = hasPassWord;
+			textInput.textEditorProperties.textAlign = convertSTLAutoSizeToFlash(textField.hAlign);
+			textInput.textEditorProperties.color = textField.color;
+			textInput.textEditorProperties.fontSize = textField.fontSize;
+			
+			if(maxChars > 0) textInput.maxChars = maxChars;
+//			textInput.promptFactory = 
+//				function():ITextRenderer
+//				{
+//					var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+//					var textFormat:TextFormat = new TextFormat(textField.fontName,textField.fontSize,0xFFFFFF);
+//					textRenderer.displayAsPassword = hasPassWord;
+////					textRenderer.disabledTextFormat = textFormat;
+////					textRenderer.styleSheet = new StyleSheet();
+////					textRenderer.styleSheet.setStyle("textFormat",textFormat);
+//					textRenderer.textFormat = textFormat;
+//					return textRenderer;
+//				};
 			textInput.textEditorFactory = 
 				function():ITextEditor
 				{
-					var text:StageTextTextEditor = new StageTextTextEditor();
-					text.color = textField.color;
-					text.fontSize = textField.fontSize;
-					text.fontFamily = textField.fontName;
-					text.textAlign = convertSTLAutoSizeToFlash(textField.hAlign);
+					var text:TextFieldTextEditor = new TextFieldTextEditor();
+//					text.color = textField.color;
+//					text.fontSize = textField.fontSize;
+//					text.fontFamily = textField.fontName;
+//					text.textAlign = convertSTLAutoSizeToFlash(textField.hAlign);
+					var textFormat:TextFormat = new TextFormat(textField.fontName,textField.fontSize,0xFFFFFF);
+					text.textFormat = textFormat;
+					text.displayAsPassword = hasPassWord;
+					if(maxChars > 0) text.maxChars = maxChars;
 					return text;
 				}
 			if(textField.parent) textField.parent.addChild(textInput);
 			textField.removeFromParent(hasDispose);
+			textInput.text = "";
 			return textInput;
 		}
 		

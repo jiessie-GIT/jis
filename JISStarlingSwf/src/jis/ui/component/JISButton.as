@@ -48,8 +48,9 @@ package jis.ui.component
 			if(movie) setCurrDisplay(movie);
 		}
 		
-		protected override function init():void
+		public override function setCurrDisplay(display:DisplayObject):void
 		{
+			super.setCurrDisplay(display);
 			setState(DEFULT);
 			JISEventUtil.addDisplayMouseEventHandler(display,onMouseHandler,TouchPhase.BEGAN,TouchPhase.ENDED);
 		}
@@ -68,10 +69,13 @@ package jis.ui.component
 				{
 					this.dispatchEvent(new Event(BUTTON_CLICK));
 					if(this._clickHandler != null) this._clickHandler.call();
+					onClickHandler();
 				}
 				isDown = false;
 			}
 		}
+		
+		protected function onClickHandler():void {}
 		
 		/** 设置显示文本 */
 		public function setText(text:String):void
@@ -116,7 +120,7 @@ package jis.ui.component
 					return;
 				}
 				
-				if(getMovieClip()) getMovieClip().gotoAndStop(Math.min(state-1,getMovieClip().totalFrames-1));
+				if(getMovieClip()) getMovieClip().gotoAndStop(Math.min(state-1,getMovieClip().totalFrames-1),false);
 				this.state = state;
 			}
 		}
@@ -126,7 +130,7 @@ package jis.ui.component
 		{
 			if(!this.lock || lock)
 			{
-				if(getMovieClip()) getMovieClip().gotoAndStop(Math.min(state-1,getMovieClip().totalFrames-1));
+				if(getMovieClip()) getMovieClip().gotoAndStop(Math.min(state-1,getMovieClip().totalFrames-1),false);
 				this.state = state;
 			}
 			this.lock = lock;
