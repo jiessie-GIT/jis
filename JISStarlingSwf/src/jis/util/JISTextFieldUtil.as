@@ -198,10 +198,15 @@ package jis.util
 		
 		public static function flashTextFieldToTexture(text:flash.text.TextField):Texture
 		{
+			var oldW:Number = text.width;
+			var oldH:Number = text.height;
+			
 			text.width = Math.max(text.width,text.textWidth);
-			text.height = Math.max(text.height,text.textHeight)+3;
+			text.height = Math.max(text.height,text.textHeight)+(int)(text.getTextFormat().size)/4;
 			var bitmap:BitmapData = new BitmapData(text.width,text.height,true,0x00);
 			bitmap.draw(text);
+			text.width = oldW;
+			text.height = oldH;
 			return Texture.fromBitmapData(bitmap);
 		}
 	}

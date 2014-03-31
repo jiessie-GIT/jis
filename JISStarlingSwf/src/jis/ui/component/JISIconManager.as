@@ -14,15 +14,16 @@ package jis.ui.component
 	 */
 	public class JISIconManager extends JISUIManager
 	{
+		
 		/** 加载的图片会添加到该显示对象中 */
 		public var _IconMovie:Sprite;
 		/** 遮罩图片 */
 		public var _MaskImage:DisplayObject;
 		
 		private var image:JISImageSprite;
-		public function JISIconManager(hasImageCenter:Boolean = false)
+		public function JISIconManager(imageDir:String = JISImageSprite.DIRECTION_LEFT)
 		{
-			image = new JISImageSprite(null,hasImageCenter);
+			image = new JISImageSprite(null,imageDir);
 			super();
 		}
 		
@@ -54,6 +55,12 @@ package jis.ui.component
 		public function setIconWH(w:int,h:int):void
 		{
 			image.setIconWH(w,h);
+		}
+		
+		/** 设置对其方向 */
+		public function setImageDirection(direction:String):void
+		{
+			image.setImageDirection(direction);
 		}
 		
 		public override function dispose():void

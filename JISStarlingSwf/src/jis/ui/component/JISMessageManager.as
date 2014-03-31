@@ -33,12 +33,49 @@ package jis.ui.component
 			this.assetGetName = assetGetName;
 			this.backLeftWidth = backLeftWidth;
 			this.backRightWidth = backRightWidth;
-			onlyId = JISLoaderCache.startLoader(swfSource,onLoaderCompleteHandler);	
+			if(swfSource is Swf)
+			{
+				source = swfSource;
+			}else
+			{
+				onlyId = JISLoaderCache.startLoader(swfSource,onLoaderCompleteHandler);	
+			}
 		}
 		
 		private function onLoaderCompleteHandler(assetManager:AssetManager):void
 		{
 			source = new Swf(assetManager.getByteArray(assetGetName),assetManager);
+		}
+		
+		/** 创建消息 */
+		public function createMessage(messageHerfName:String,message:String,textColor:uint = 0xffffff):Sprite
+		{
+			var messageSprite:Sprite = source.createSprite(messageHerfName);
+			if(messageSprite == null) return null;
+			var sText:starling.text.TextField = messageSprite.getChildByName("_Text") as starling.text.TextField;
+			if(sText)
+			{
+				if(fText == null)
+				{
+					fText = new flash.text.TextField();
+					var textFormat:TextFormat = fText.getTextFormat();
+					textFormat.font = sText.fontName;
+					textFormat.size = sText.fontSize;
+					fText.defaultTextFormat = textFormat;
+				}
+				fText.text = message;
+				sText.width = fText.textWidth+10;
+				sText.text = message;
+				sText.color = textColor;
+				var back:DisplayObject = messageSprite.getChildByName("_Back");
+				if(back)
+				{
+					back.width = backLeftWidth + sText.width + backRightWidth;
+					sText.x = back.width/2-sText.width/2;
+				}
+			}
+			
+			return messageSprite;
 		}
 		
 		/** 
@@ -57,29 +94,8 @@ package jis.ui.component
 		 */
 		public function showMessage(messageHerfName:String,message:String,completeHandler:Function = null,topMoveRange:int = 50,scale:Number = 1,time:Number = 1,delay:Number = 0,transition:String = Transitions.EASE_IN,stageWidth:int = -1,stageHeight:int = -1,owner:DisplayObjectContainer = null):Sprite
 		{
-			var messageSprite:Sprite = source.createSprite(messageHerfName);
+			var messageSprite:Sprite = createMessage(messageHerfName,message);
 			if(messageSprite == null) return null;
-			var sText:starling.text.TextField = messageSprite.getChildByName("_Text") as starling.text.TextField;
-			if(sText)
-			{
-				if(fText == null)
-				{
-					fText = new flash.text.TextField();
-					var textFormat:TextFormat = fText.getTextFormat();
-					textFormat.font = sText.fontName;
-					textFormat.size = sText.fontSize;
-					fText.defaultTextFormat = textFormat;
-				}
-				fText.text = message;
-				sText.width = fText.textWidth+10;
-				sText.text = message;
-				var back:DisplayObject = messageSprite.getChildByName("_Back");
-				if(back)
-				{
-					back.width = backLeftWidth + sText.width + backRightWidth;
-					sText.x = back.width/2-sText.width/2;
-				}
-			}
 			
 			stageWidth = stageWidth <= 0 ? Starling.current.root.width:stageWidth;
 			stageHeight = stageHeight <= 0 ? Starling.current.root.height:stageHeight;

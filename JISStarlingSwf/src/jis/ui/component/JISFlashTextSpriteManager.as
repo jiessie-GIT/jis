@@ -88,6 +88,7 @@ package jis.ui.component
 				image.texture = texture;
 				image.readjustSize();
 			}
+			trace(this.getDisplay().height,image.height,getTextHeight());
 		}
 		
 		public function getTextField():flash.text.TextField
@@ -109,6 +110,11 @@ package jis.ui.component
 			image = null;
 			textField = null;
 			super.dispose();
+		}
+		
+		public function getTextHeight():int
+		{
+			return Math.max(textField.height,textField.textHeight);
 		}
 	}
 }

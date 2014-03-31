@@ -15,17 +15,27 @@ package jis.ui
 	 */
 	public class JISImageSprite extends JISSimpleLoaderSprite
 	{
+		/** 左上角为0,0 */
+		public static const DIRECTION_LEFT:String = "left";
+		/** 右上角为0,0 */
+		public static const DIRECTION_RIGHT:String = "right";
+		/** 左下角为0,0 */
+		public static const DIRECTION_BOTTOM_LEFT:String = "bottom_left";
+		/** 右下角为0,0 */
+		public static const DIRECTION_BOTTOM_RIGHT:String = "bottom_right";
+		/** 中心为0,0 */
+		public static const DIRECTION_CENTER:String = "center";
 		private var imageName:String;
 		private var image:Image;
 		
 		private var w:int;
 		private var h:int;
-		private var hasCenter:Boolean;
+		private var imageDirection:String;
 		
-		public function JISImageSprite(source:* = null,hasCenter:Boolean = false)
+		public function JISImageSprite(source:* = null,imageDir:String = DIRECTION_LEFT)
 		{
 			super();
-			this.hasCenter = hasCenter;
+			setImageDirection(imageDir);
 			setAssetSource(source);
 		}
 		
@@ -92,10 +102,37 @@ package jis.ui
 				image.width = w;
 				image.height = h;
 			}
-			if(this.hasCenter)
+			setImageDirection(this.imageDirection);
+		}
+		
+		/** 设置图像方式 */
+		public function setImageDirection(direction:String):void
+		{
+			this.imageDirection = direction;
+			if(this.image)
 			{
-				image.x = -Math.round(image.width/2);
-				image.y = -Math.round(image.height/2);
+				if(direction == DIRECTION_LEFT) image.x = image.y = 0;
+				else if(direction == DIRECTION_RIGHT)
+				{
+					//右上角为0，0
+					image.x = -image.width;
+					image.y = 0;
+				}else if(direction == DIRECTION_CENTER)
+				{
+					//中心为0，0
+					image.x = -Math.round(image.width/2);
+					image.y = -Math.round(image.height/2);
+				}else if(direction == DIRECTION_BOTTOM_LEFT)
+				{
+					//左下角为0,0
+					image.x = 0;
+					image.y = -image.height
+				}else if(direction == DIRECTION_BOTTOM_RIGHT)
+				{
+					//右下角为0，0
+					image.x = -image.width;
+					image.y = -image.height;
+				}
 			}
 		}
 		

@@ -4,6 +4,7 @@
     <classEntry path="jis.ui.component.JISNumberInputWindow"/>
     <classEntry path="jis.ui.component.JISITableMultiCell"/>
     <classEntry path="jis.ui.component.JISMaskIntervalUIManager"/>
+    <classEntry path="jis.ui.component.JISMessageQueue"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
