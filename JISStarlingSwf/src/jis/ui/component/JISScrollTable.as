@@ -2,10 +2,15 @@ package jis.ui.component
 {
 	import flash.geom.Rectangle;
 	
+	import feathers.events.FeathersEventType;
+	
 	import lzm.starling.display.ScrollContainer;
 	import lzm.util.CollisionUtils;
 	
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	/**
 	 * 能够滚动的Table,操作table内容的话请调用getTable()获取JISTable实例
@@ -13,13 +18,20 @@ package jis.ui.component
 	 */
 	public class JISScrollTable extends ScrollContainer
 	{
+		public static const SCROLL_TYPE_NORMAL:String = "SCROLL_TYPE_NORMAL";
+		public static const SCROLL_TYPE_CELL:String = "SCROLL_TYPE_CELL";
+		
 		private var table:JISTable;
+		private var scrollType:String = SCROLL_TYPE_NORMAL;
+		
 		public function JISScrollTable(tabbedCellList:Array=null, hasClickListener:Boolean=true)
 		{
 			super();
 			table = new JISTable(tabbedCellList, hasClickListener);
 			this.addScrollContainerItem(table);
 			table.addEventListener(Event.CHANGE,onTableChangeHandler);
+			
+			addEventListener(FeathersEventType.SCROLL_COMPLETE,onScrollCompleteHandler);
 		}
 		
 		public function getTable():JISTable { return this.table; }
@@ -116,6 +128,51 @@ package jis.ui.component
 //				tableCell.getDisplay().visible = CollisionUtils.isIntersectingRect(_viewPort2,itemViewPort);
 			}
 			
+		}
+		
+		public function setScrollType(type:String):void
+		{
+			this.scrollType = type;
+		}
+		
+		private function onScrollCompleteHandler(e:*):void{
+			if(this.scrollType == SCROLL_TYPE_CELL){
+				var tableCell:JISITableCell = getScrollShowCell();
+				horizontalScrollPosition = tableCell.getDisplay().x;
+				verticalScrollPosition = tableCell.getDisplay().y;
+				
+				scrollToPosition(tableCell.getDisplay().x,tableCell.getDisplay().y,1);
+			}
+		}
+		
+		public function getScrollShowCell():JISITableCell{
+			_viewPort2.x = _horizontalScrollPosition;
+			_viewPort2.y = _verticalScrollPosition;
+			_viewPort2.width = width;
+			_viewPort2.height = height;
+			
+			if((maxHorizontalScrollPosition != 0 && _viewPort2.x <= 0) || (maxVerticalScrollPosition != 0 && _viewPort2.y <= 0)) return this.getTable().getTabbedList()[0];
+			if((maxHorizontalScrollPosition != 0 && _viewPort2.x >= maxHorizontalScrollPosition) || (maxVerticalScrollPosition != 0 && _viewPort2.y >= maxVerticalScrollPosition)) return this.getTable().getTabbedList()[this.getTable().getTabbedList().length-1];
+			
+			var tableCell:JISITableCell;
+			var itemViewPort:Rectangle = new Rectangle();
+			for each(tableCell in this.getTable().getTabbedList())
+			{
+				itemViewPort.x = tableCell.getDisplay().x;
+				itemViewPort.y = tableCell.getDisplay().y;
+				itemViewPort.width = tableCell.getDisplay().width;
+				itemViewPort.height = tableCell.getDisplay().height;
+				
+				if(CollisionUtils.isIntersectingRect(_viewPort2,itemViewPort))
+				{
+					if((maxHorizontalScrollPosition != 0 && _viewPort2.x - itemViewPort.x < itemViewPort.width/2) 
+						|| (maxVerticalScrollPosition != 0 && _viewPort2.y - itemViewPort.y < itemViewPort.height/2))
+					{
+						break;
+					}
+				}
+			}
+			return tableCell;
 		}
 	}
 }

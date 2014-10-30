@@ -43,11 +43,11 @@ package jis.ui.component
 		/** 设置运动方式 */
 		public function setMoveTransition(transition:String):void { this.moveTransition = transition; }
 		/** 设置选中按钮 */
-		public override function setSelectBtn(btn:JISButton):void
+		public override function setSelectBtn(btn:JISButton,hasDispath:Boolean = true):void
 		{
 			if(lock) return;
 			var oldBtn:JISButton = getCurrentSelectBtn();
-			super.setSelectBtn(btn);
+			super.setSelectBtn(btn,hasDispath);
 			var newBtn:JISButton = getCurrentSelectBtn();
 			if(oldBtn != newBtn && identificationPoint)
 			{

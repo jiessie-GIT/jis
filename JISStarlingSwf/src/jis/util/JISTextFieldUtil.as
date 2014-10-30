@@ -115,13 +115,13 @@ package jis.util
 //					text.fontSize = textField.fontSize;
 //					text.fontFamily = textField.fontName;
 //					text.textAlign = convertSTLAutoSizeToFlash(textField.hAlign);
-					var textFormat:TextFormat = new TextFormat(textField.fontName,textField.fontSize,0xFFFFFF);
+					var textFormat:TextFormat = new TextFormat(textField.fontName,textField.fontSize,textField.color);
 					text.textFormat = textFormat;
 					text.displayAsPassword = hasPassWord;
 					if(maxChars > 0) text.maxChars = maxChars;
 					return text;
 				}
-			if(textField.parent) textField.parent.addChild(textInput);
+			if(textField.parent) textField.parent.addChildAt(textInput,textField.parent.getChildIndex(textField));
 			textField.removeFromParent(hasDispose);
 			textInput.text = "";
 			return textInput;

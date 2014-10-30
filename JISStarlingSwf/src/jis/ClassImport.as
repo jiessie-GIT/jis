@@ -6,6 +6,7 @@ package jis
 	
 	import lzm.starling.STLStarup;
 	import lzm.starling.display.ScrollContainer;
+	import lzm.starling.gestures.HoldGestures;
 	
 	/**
 	 * 
@@ -20,6 +21,7 @@ package jis
 			var scrollContainer:ScrollContainer;
 			var layout:HorizontalLayout;
 			var s:STLStarup;
+			var holdGestures:HoldGestures;
 		}
 	}
 }

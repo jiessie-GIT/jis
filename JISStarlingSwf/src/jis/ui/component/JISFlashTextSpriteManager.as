@@ -36,7 +36,7 @@ package jis.ui.component
 				sprite.name = this.display.name;
 				sprite.x = this.display.x;
 				sprite.y = this.display.y;
-				this.display.parent.addChild(sprite);
+				this.display.parent.addChildAt(sprite,this.display.parent.getChildIndex(this.display));
 				setTextField(JISTextFieldUtil.stlTextConvertFlashText(this.display as starling.text.TextField,null,1,true,false));
 				this.display = sprite;
 			}

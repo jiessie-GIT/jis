@@ -26,6 +26,7 @@ package jis.ui.component
 		private var table:JISScrollTable;
 		private var cellClass:Class;
 		private var _selectHandler:Function;
+		private var _enable:Boolean = true;
 		
 		public function JISDropDownMenu(menuHeight:int,swfSource:JISUISprite,cellClass:Class = null)
 		{
@@ -55,7 +56,7 @@ package jis.ui.component
 			selectTableCell = new cellClass(swfSource.getSourceSwf());
 			table.width = _Selected.width;
 			_Info.addChild(table);
-			_Back.height = table.height;
+			if(_Back) _Back.height = table.height;
 			if(selectTableCell is JISUIManager)
 			{
 				(selectTableCell as JISUIManager).setCurrDisplay(_Selected);
@@ -78,6 +79,7 @@ package jis.ui.component
 		
 		private function show(e:* = null):void
 		{
+			if(!_enable) return;
 			if(_Info.visible)
 			{
 				close();
@@ -85,16 +87,18 @@ package jis.ui.component
 			}
 				
 			_Info.visible = true;
-			_Back.visible = true;
+			if(_Back) _Back.visible = true;
 			_Btn.setState(JISButton.SELECTED);
 		}
 		
 		private function close():void
 		{
 			_Info.visible = false;
-			_Back.visible = false;
+			if(_Back) _Back.visible = false;
 			_Btn.setState(JISButton.DEFULT,true);
 		}
+		
+		public function getTable():JISTable { return table.getTable(); }
 		
 		public override function dispose():void
 		{
@@ -106,5 +110,8 @@ package jis.ui.component
 			swfSource = null;
 			super.dispose();
 		}
+
+		public function get enable():Boolean { return _enable; }
+		public function set enable(value:Boolean):void { _enable = value; }
 	}
 }

@@ -223,6 +223,15 @@ package jis.ui.component
 			currDataIndex++;
 		}
 		
+		/** 会以obj中属性名为条件查找对应切割对象，赋值obj中value值 */
+		public function setSpliceDataForObjKeyValue(datas:*):void
+		{
+			for(var i:int = 0;i<displayInstanceArray.length;i++) {
+				var cell:JISIDisplayCuttingCell = displayInstanceArray[i];
+				cell.setData(datas[(cell as JISUIManager).getDisplay().name]);
+			}
+		}
+		
 		public override function dispose():void
 		{
 			displayDic = null;
