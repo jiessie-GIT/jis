@@ -130,7 +130,7 @@ package jis.ui.component
 //		}
 		
 		/** 设置选中按钮 */
-		public function setSelectBtn(btn:JISButton,hasDispath:Boolean = true):void
+		public function setSelectBtn(btn:JISButton,hasDispatchEvent:Boolean = true):void
 		{
 			if(isRadio() && currSelectBtn == btn) return;
 			if(isRadio() && currSelectBtn)
@@ -145,7 +145,9 @@ package jis.ui.component
 					//复选
 				else if(isMulti()) currSelectBtn.setSelected(!currSelectBtn.isSelected());
 			}
-			if(hasDispath){
+			
+			if(hasDispatchEvent)
+			{
 				this.dispatchEvent(new Event(CLICK_BTN));
 				if(selectHandler != null)
 				{

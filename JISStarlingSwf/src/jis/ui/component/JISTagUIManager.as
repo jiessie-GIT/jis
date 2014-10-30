@@ -43,24 +43,47 @@ package jis.ui.component
 			_TagBtns.setSelectBtnHandler(onSelectBtnHandler);
 		}
 		
-		protected function onSelectBtnHandler(btn:JISButton):void
+		public function setContainerDisplay(display:DisplayObject):void
 		{
 			if(currDisplayObject && _InfoContainer.contains(currDisplayObject))
 			{
 				_InfoContainer.removeChild(currDisplayObject);
 				if(currDisplayObject is JISITagCell) (currDisplayObject as JISITagCell).closeToTag();
 			}
-			currDisplayObject = btnNameClassInfos[btn.getDisplay().name];
-			if(currDisplayObject == null && this.createTagDisplayHandler != null)
-			{
-				currDisplayObject = this.createTagDisplayHandler.call(null,btn.getDisplay().name);
-				btnNameClassInfos[btn.getDisplay().name] = currDisplayObject;
-			}
+			currDisplayObject = display;
 			if(currDisplayObject)
 			{
 				_InfoContainer.addChild(currDisplayObject);
 				if(currDisplayObject is JISITagCell) (currDisplayObject as JISITagCell).showToTag();
 			}
+		}
+		
+		public function setSelectBtnForName(name:String):void
+		{
+			onSelectBtnHandler(_TagBtns.getButtonForDisplayName(name));
+		}
+		
+		public function onSelectBtnHandler(btn:JISButton):void
+		{
+			var display:DisplayObject = btnNameClassInfos[btn.getDisplay().name];
+			if(display == null && this.createTagDisplayHandler != null)
+			{
+				display = this.createTagDisplayHandler.call(null,btn.getDisplay().name);
+				btnNameClassInfos[btn.getDisplay().name] = display;
+			}
+			setContainerDisplay(display);
+		}
+		
+		public function getDisplayForType(type:String):DisplayObject
+		{
+			if(btnNameClassInfos[type] == null)
+			{
+				if(_TagBtns.getButtonForDisplayName(type) != null && this.createTagDisplayHandler != null)
+				{
+					btnNameClassInfos[type] = this.createTagDisplayHandler.call(null,type);
+				}
+			}
+			return btnNameClassInfos[type];
 		}
 		
 		public function getCurrDisplayObject():DisplayObject { return this.currDisplayObject; }

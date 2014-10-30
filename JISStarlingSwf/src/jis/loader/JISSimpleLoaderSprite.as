@@ -43,6 +43,11 @@ package jis.loader
 		/** 资源加载完毕 */
 		private function onLoadComplete(assetManager:AssetManager):void
 		{
+			setUIAsset(assetManager);
+		}
+		
+		public function setUIAsset(assetManager:AssetManager):void
+		{
 			this.assetManager = assetManager;
 			loadProgressHandler = null;
 			loadComplete();

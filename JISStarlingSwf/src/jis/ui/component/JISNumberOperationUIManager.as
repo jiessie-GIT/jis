@@ -35,6 +35,7 @@ package jis.ui.component
 			_IncNumBtn.addEventListener(JISButton.BUTTON_CLICK,onIncNumHandler);
 			_MaxNumBtn.addEventListener(JISButton.BUTTON_CLICK,onMaxNumHandler);
 			updateNumText();
+			if(_NumText) _NumText.autoScale = true;
 		}
 		
 		private function onDecNumHandler(e:*):void

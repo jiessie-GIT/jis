@@ -81,7 +81,7 @@ package jis.util
 			else return TextFieldAutoSize.CENTER;
 		}
 		
-		public static function stlTextConvertTextInput(textField:starling.text.TextField,hasDispose:Boolean = true,maxChars:int = -1,hasPassWord:Boolean = false):TextInput
+		public static function stlTextConvertTextInput(textField:starling.text.TextField,hasDispose:Boolean = true,maxChars:int = -1,hasPassWord:Boolean = false,multiline:Boolean = false,wordWrap:Boolean = false):TextInput
 		{
 			var textInput:TextInput = new TextInput();
 			textInput.text = textField.text;
@@ -93,6 +93,7 @@ package jis.util
 			textInput.textEditorProperties.textAlign = convertSTLAutoSizeToFlash(textField.hAlign);
 			textInput.textEditorProperties.color = textField.color;
 			textInput.textEditorProperties.fontSize = textField.fontSize;
+			textInput.name = textField.name;
 			
 			if(maxChars > 0) textInput.maxChars = maxChars;
 //			textInput.promptFactory = 
@@ -119,6 +120,8 @@ package jis.util
 					text.textFormat = textFormat;
 					text.displayAsPassword = hasPassWord;
 					if(maxChars > 0) text.maxChars = maxChars;
+					text.multiline = multiline;
+					text.wordWrap = wordWrap;
 					return text;
 				}
 			if(textField.parent) textField.parent.addChildAt(textInput,textField.parent.getChildIndex(textField));
@@ -203,6 +206,8 @@ package jis.util
 			
 			text.width = Math.max(text.width,text.textWidth);
 			text.height = Math.max(text.height,text.textHeight)+(int)(text.getTextFormat().size)/4;
+			if(text.width <= 0 || text.height <= 0) return null;
+			
 			var bitmap:BitmapData = new BitmapData(text.width,text.height,true,0x00);
 			bitmap.draw(text);
 			text.width = oldW;

@@ -66,16 +66,20 @@ package jis.ui.component
 		
 		public function stop():void
 		{
-			time.stop();
+			if(time) time.stop();
 		}
 		
 		private function onTimerHandler(e:TimerEvent):void
 		{
-			var minute:String = (int)((time.repeatCount-time.currentCount)/60)+"";
+			
+			var hours:int = (Math.floor(time.repeatCount-time.currentCount)/3600);
+			var hoursStr:String = "";
+			if(hours > 0) hoursStr = hours+"";
+			var minute:String = (int)(((time.repeatCount-time.currentCount)%3600)/60)+"";
 			if(minute.length == 1) minute = "0"+minute;
 			var second:String = (time.repeatCount-time.currentCount)%60+"";
 			if(second.length == 1) second = "0"+second;
-			getNumberCharacterQuadBatch().setChar(minute+":"+second);
+			getNumberCharacterQuadBatch().setChar((hoursStr.length > 0 ? hoursStr+":":"")+minute+":"+second);
 		}
 		
 		private function onTimerCompleteHandler(e:TimerEvent):void

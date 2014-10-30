@@ -231,6 +231,12 @@ package jis.ui.component
 				cell.setData(datas[(cell as JISUIManager).getDisplay().name]);
 			}
 		}
+		public function setSpliceForObjKey(data:*):void
+		{
+			var infos:Array = [];
+			for(var key:* in data) infos.push(key);
+			setSpliceForIndex(infos);
+		}
 		
 		public override function dispose():void
 		{

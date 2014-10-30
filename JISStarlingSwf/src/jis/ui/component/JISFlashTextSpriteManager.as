@@ -78,6 +78,12 @@ package jis.ui.component
 		private function updateImage():void
 		{
 			var texture:Texture = JISTextFieldUtil.flashTextFieldToTexture(this.textField);
+			if(texture == null)
+			{
+				if(image) image.removeFromParent(true);
+				image = null;
+				return;
+			}
 			if(image == null)
 			{
 				image = new Image(texture);
@@ -88,7 +94,6 @@ package jis.ui.component
 				image.texture = texture;
 				image.readjustSize();
 			}
-			trace(this.getDisplay().height,image.height,getTextHeight());
 		}
 		
 		public function getTextField():flash.text.TextField

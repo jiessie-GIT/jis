@@ -21,9 +21,9 @@ package jis.ui.component
 		public var _MaskImage:DisplayObject;
 		
 		private var image:JISImageSprite;
-		public function JISIconManager(imageDir:String = JISImageSprite.DIRECTION_LEFT)
+		public function JISIconManager(imageDir:String = JISImageSprite.DIRECTION_LEFT,hasUseCache:Boolean = true)
 		{
-			image = new JISImageSprite(null,imageDir);
+			image = new JISImageSprite(null,imageDir,hasUseCache);
 			super();
 		}
 		

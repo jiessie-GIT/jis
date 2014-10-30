@@ -72,6 +72,10 @@ package jis.ui.component
 			table.getTable().setCellDatas(datas,swfSource.getSourceSwf());
 		}
 		
+		/** 获得选中的内容 */
+		public function getSelectTableValue():* { return selectTableCell.getValue(); }
+		public function getTable():JISScrollTable { return table; }
+		
 		public function set selectHandler(handler:Function):void
 		{
 			this._selectHandler = handler;

@@ -13,24 +13,27 @@ package jis.ui.component
 		private var tableCellDatasHandler:Function;
 		private var tableCellCreateParams:Function;
 		private var tableSelectHandler:Function;
+		/** 是否默认选中 */
+		private var hasDefultSelect:Boolean = true;
 		
-		public function JISTagScrollTableUIManager()
+		public function JISTagScrollTableUIManager(hasDefultSelect:Boolean = true)
 		{
+			this.hasDefultSelect = hasDefultSelect;
 			setTagCreateDisplayHandler(defultCreateTableHandler);
 			super();
 		}
 		
 		private function defultCreateTableHandler(btnName:String):JISScrollTable
 		{
-			return new JISScrollTable;
+			return new JISScrollTable();
 		}
 		
-		protected override function onSelectBtnHandler(btn:JISButton):void
+		public override function onSelectBtnHandler(btn:JISButton):void
 		{
 			super.onSelectBtnHandler(btn);
 			if(tableCellDatasHandler != null)
 			{
-				getCurrTable().getTable().setCellDatas(tableCellDatasHandler(btn.getDisplay().name),this.tableCellCreateParams.call(),true);
+				getCurrTable().getTable().setCellDatas(tableCellDatasHandler(btn.getDisplay().name),this.tableCellCreateParams == null ? null:this.tableCellCreateParams.call(),true,!hasDefultSelect);
 				getCurrTable().getTable().selectHandler = onTableSelectHandler;
 			}
 		}

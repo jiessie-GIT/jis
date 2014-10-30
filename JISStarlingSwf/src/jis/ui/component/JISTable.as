@@ -49,6 +49,8 @@ package jis.ui.component
 		private var allowRepeatSelect:Boolean = true;
 		/** 选中回调 */
 		private var _selectHandler:Function;
+		/** 最大单元格，如果超出的话，则会删除第一个然后加入 */
+		private var maxCell:int = -1;
 		
 		/**
 		 * @param tabbedCellList 初始化格子列表，列表中的项需要实现JISITableCell接口或者是DisplayObject的子类
@@ -156,6 +158,9 @@ package jis.ui.component
 			{
 				//设置默认选中
 				setSelected(tabbedCellList[0]);
+			}else
+			{
+				currSelect = null;
 			}
 			//更新坐标
 			updateTabbdeCellLocation();
@@ -285,6 +290,7 @@ package jis.ui.component
 			{
 				tabbedCellList.push(tableCell);
 			}
+			if(maxCell > 0 && tabbedCellList.length > maxCell) removeTableCell(tabbedCellList.shift());
 			this.addChild(tableCell is JISITableCell ? tableCell.getDisplay():tableCell);
 			updateTabbdeCellLocation();
 			this.dispatchEvent(new Event(Event.CHANGE));
@@ -453,7 +459,7 @@ package jis.ui.component
 		}
 		
 		/** 将数据当成Model的形式，根据setCellInstanceClass设置的类型创建对应的显示对象 */
-		public function addCellData(data:*,createParams:* = null,flag:Boolean = false):void
+		public function addCellData(data:*,createParams:* = null,flag:Boolean = false,index:int = -1):void
 		{
 			if(cellInstanceClass == null)
 			{
@@ -470,7 +476,7 @@ package jis.ui.component
 			}
 			cell.setValue(data);
 			instanceDataDic[data] = cell;
-			addTableCell(cell);
+			addTableCell(cell,index);
 			if(!flag && this.tabbedCellList.length == 1)
 			{
 				setSelected(this.tabbedCellList[0]);
@@ -540,6 +546,14 @@ package jis.ui.component
 		{
 			_selectHandler = value;
 		}
-
+		/** 设置最大单元格数量 */
+		public function setMaxCellNum(num:int):void { this.maxCell = num; }
+		
+		public function setSelectIndex(index:int):void
+		{
+			setSelected(tabbedCellList[index]);
+		}
+		
+		public function getSelectIndex():int { return tabbedCellList.indexOf(this.currSelect) }
 	}
 }

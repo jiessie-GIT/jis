@@ -8,6 +8,7 @@ package jis.ui
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import starling.utils.AssetManager;
 	
 	/**
 	 * 图片容器，可以加载一个图片进行显示
@@ -15,16 +16,21 @@ package jis.ui
 	 */
 	public class JISImageSprite extends JISSimpleLoaderSprite
 	{
+		/** 图片资源管理器，加载图片的话会首先在该资源管理器中寻找，如果有的话就直接获取使用 */
+		public static var imageSourceAssetManager:AssetManager;
 		/** 左上角为0,0 */
 		public static const DIRECTION_LEFT:String = "left";
 		/** 右上角为0,0 */
 		public static const DIRECTION_RIGHT:String = "right";
 		/** 左下角为0,0 */
 		public static const DIRECTION_BOTTOM_LEFT:String = "bottom_left";
+		/** 下方中间为0,0 */
+		public static const DIRECTION_BOTTOM_CENTER:String = "bottom_center";
 		/** 右下角为0,0 */
 		public static const DIRECTION_BOTTOM_RIGHT:String = "bottom_right";
 		/** 中心为0,0 */
 		public static const DIRECTION_CENTER:String = "center";
+		
 		private var imageName:String;
 		private var image:Image;
 		
@@ -32,8 +38,11 @@ package jis.ui
 		private var h:int;
 		private var imageDirection:String;
 		
-		public function JISImageSprite(source:* = null,imageDir:String = DIRECTION_LEFT)
+		private var hasUseCache:Boolean;
+		
+		public function JISImageSprite(source:* = null,imageDir:String = DIRECTION_LEFT,hasUseCache:Boolean = true)
 		{
+			this.hasUseCache = hasUseCache;
 			super();
 			setImageDirection(imageDir);
 			setAssetSource(source);
@@ -52,12 +61,23 @@ package jis.ui
 			if(newImageName == imageName) return;
 			imageName = newImageName;
 			disposeImage();
-			super.setAssetSource(source);
+			if(this.hasUseCache && imageSourceAssetManager && imageSourceAssetManager.getTexture(imageName) != null)
+			{
+				setTexture(imageSourceAssetManager.getTexture(imageName));
+			}else
+			{
+				super.setAssetSource(source);
+			}
 		}
 		
 		protected override function loadComplete():void
 		{
 			var texture:Texture = getAssetTextureArrayForName(imageName);
+			setTexture(texture);
+		}
+		
+		private function setTexture(texture:Texture):void
+		{
 			if(texture)
 			{
 				disposeImage();
@@ -131,6 +151,10 @@ package jis.ui
 				{
 					//右下角为0，0
 					image.x = -image.width;
+					image.y = -image.height;
+				}else if(direction == DIRECTION_BOTTOM_CENTER){
+					//下方中间为0,0
+					image.x = -Math.round(image.width/2);
 					image.y = -image.height;
 				}
 			}
