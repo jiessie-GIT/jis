@@ -102,8 +102,6 @@ package jis.ui.component
 			_Btn.setState(JISButton.DEFULT,true);
 		}
 		
-		public function getTable():JISTable { return table.getTable(); }
-		
 		public override function dispose():void
 		{
 			JISEventUtil.removeDisplayClickEventHandler(_Selected);
