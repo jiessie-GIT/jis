@@ -102,7 +102,7 @@ package jis.ui.component
 			{
 				currRollIndex++;
 			}
-			this.display.visible = true;
+			this.maskedDisplayObject.visible = true;
 			var message:String = rollMessages[currRollIndex];
 			_Text.htmlText = message;
 			_Text.getDisplay().x = maskImage.width;
@@ -115,7 +115,7 @@ package jis.ui.component
 		private function endRoll():void
 		{
 			currRollIndex = -1;
-			this.display.visible = false;
+			this.maskedDisplayObject.visible = false;
 		}
 		
 		public override function dispose():void

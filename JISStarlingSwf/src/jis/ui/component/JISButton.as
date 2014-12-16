@@ -3,6 +3,7 @@ package jis.ui.component
 	import jis.ui.JISUIMovieClipManager;
 	import jis.util.JISEventUtil;
 	
+	import lzm.starling.display.Button;
 	import lzm.starling.swf.display.SwfMovieClip;
 	
 	import starling.display.DisplayObject;
@@ -155,7 +156,7 @@ package jis.ui.component
 		}
 		
 		/** 检查显示对象是否可以创建该类型按钮 */
-		public function checkHasButton(display:DisplayObject):Boolean { return display is SwfMovieClip; }
+		public function checkHasButton(display:DisplayObject):Boolean { return display is SwfMovieClip || display is Button; }
 		
 		public function setClickHandler(handler:Function):void { this._clickHandler = handler; }
 	}

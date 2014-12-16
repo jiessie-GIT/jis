@@ -42,7 +42,7 @@ package jis.ui.component
 		/** 会根据截取之后的剩余字母进行升序排序 */
 		private var displayInstanceArray:Array = [];
 		
-		private var spliceChar:String;//截取字符
+		protected var spliceChar:String;//截取字符
 		protected var clazz:Class;//生成实例
 		/** 通过setSpliceForIndex赋值的最大索引，方便添加新的数据到结尾 */
 		private var currDataIndex:int = 0;
@@ -228,7 +228,7 @@ package jis.ui.component
 		{
 			for(var i:int = 0;i<displayInstanceArray.length;i++) {
 				var cell:JISIDisplayCuttingCell = displayInstanceArray[i];
-				cell.setData(datas[(cell as JISUIManager).getDisplay().name]);
+				cell.setData(datas[getCharForDisplay((cell as JISUIManager).getDisplay())]);
 			}
 		}
 		public function setSpliceForObjKey(data:*):void

@@ -40,5 +40,12 @@ package jis.util
 		{
 			if(display.parent) display.parent.setChildIndex(display,display.parent.numChildren-1);
 		}
+		
+		public static function setDisplayToCenter(display:DisplayObject):void{
+			if(display.parent){
+				display.x = display.parent.width/2 - display.width/2;
+				display.y = display.parent.height/2 - display.height/2;
+			}
+		}
 	}
 }

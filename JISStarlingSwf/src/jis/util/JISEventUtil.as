@@ -80,7 +80,7 @@ package jis.util
 						}
 					}
 				};
-			Starling.current.root.addEventListener(TouchEvent.TOUCH,listener);
+			Starling.juggler.delayCall(Starling.current.root.addEventListener,.1,TouchEvent.TOUCH,listener);
 			displayEventListenerDic[display] = listener;
 		}
 		

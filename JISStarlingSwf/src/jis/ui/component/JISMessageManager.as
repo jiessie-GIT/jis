@@ -3,6 +3,7 @@ package jis.ui.component
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import jis.JISConfig;
 	import jis.loader.JISLoaderCache;
 	
 	import lzm.starling.swf.Swf;
@@ -21,6 +22,12 @@ package jis.ui.component
 	 */
 	public class JISMessageManager
 	{
+		private static var _instance:JISMessageManager;
+		public static function get instance():JISMessageManager { return _instance; }
+		public static function initInstance(swfSource:*,assetGetName:String,backLeftWidth:int,backRightWidth:int):void{
+			_instance = new JISMessageManager(swfSource,assetGetName,backLeftWidth,backRightWidth);
+		}
+		
 		private var source:Swf;
 		private var onlyId:int;
 		private var assetGetName:String;
@@ -97,9 +104,9 @@ package jis.ui.component
 			var messageSprite:Sprite = createMessage(messageHerfName,message);
 			if(messageSprite == null) return null;
 			
-			stageWidth = stageWidth <= 0 ? Starling.current.root.width:stageWidth;
-			stageHeight = stageHeight <= 0 ? Starling.current.root.height:stageHeight;
-			owner = owner == null ? (Starling.current.root as DisplayObjectContainer):owner;
+			owner = owner == null ? JISConfig.windowStage:owner;
+			stageWidth = stageWidth <= 0 ? owner.width:stageWidth;
+			stageHeight = stageHeight <= 0 ? owner.height:stageHeight;
 			
 			messageSprite.x = stageWidth/2 - (messageSprite.width*scale)/2;
 			messageSprite.y = stageHeight/2 - (messageSprite.height*scale)/2;
@@ -121,6 +128,8 @@ package jis.ui.component
 			});
 			return messageSprite;
 		}
+		
+		
 		
 	}
 }

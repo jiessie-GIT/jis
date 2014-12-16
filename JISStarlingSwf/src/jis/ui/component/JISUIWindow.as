@@ -3,6 +3,7 @@ package jis.ui.component
 	import jis.JISConfig;
 	import jis.ui.JISImageSprite;
 	import jis.ui.JISUISprite;
+	import jis.util.JISDisplayUtil;
 	
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -47,6 +48,11 @@ package jis.ui.component
 		{
 			if(this.owner) this.owner.addChild(this);
 			else if(JISConfig.windowStage) JISConfig.windowStage.addChild(this);
+		}
+		
+		public function showForCenter():void{
+			show();
+			JISDisplayUtil.setDisplayToCenter(this);
 		}
 		
 		public override function dispose():void
