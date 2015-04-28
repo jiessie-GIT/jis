@@ -20,12 +20,15 @@ package jis.ui.component
 		public var _Text:TextField;
 		/** 进度条中间位置 */
 		public var _Center:DisplayObject;
+		/** 进度条底部位置 */
+		public var _Back:DisplayObject;
 		/** 进度条管理 */
 		protected var progressBar:JISProgress;
 		
 		private var maskedDisplayObject:PixelMaskDisplayObject;
 		private var maskImage:Image;
 		private var hasMask:Boolean;
+		private var _progressHandler:Function;
 		
 		public function JISUIProgressManager(speedProgressHandler:Function = null,hasMask:Boolean = true)
 		{
@@ -87,6 +90,7 @@ package jis.ui.component
 			{
 				_Text.text = progress+"/"+maxProgress;
 			}
+			if(_progressHandler != null) _progressHandler.call(null,progress/maxProgress);
 		}
 		
 		public override function dispose():void
@@ -107,5 +111,11 @@ package jis.ui.component
 			
 			super.dispose();
 		}
+
+		public function set progressHandler(value:Function):void
+		{
+			_progressHandler = value;
+		}
+
 	}
 }

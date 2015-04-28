@@ -10,7 +10,7 @@ package jis.ui.component
 	{
 		private var scrollContainer:JISScrollContiner;
 		
-		public function JISScrollButtonGroupManager(w:int,h:int,list:Array=null, btnClass:Class=null,scrollType:String = JISScrollContiner.SCROLL_AUTO,scrollState:String = JISScrollContiner.SCROLL_ROLL_NORMAL)
+		public function JISScrollButtonGroupManager(w:int,h:int,list:Array=null, btnClass:Class=null,scrollType:String = "auto",scrollState:String = "normal")
 		{
 			super(list, btnClass);
 			scrollContainer = new JISScrollContiner(scrollType,scrollState);

@@ -28,7 +28,7 @@ package jis.ui.component
 		{
 			_YesBtn.addEventListener(JISButton.BUTTON_CLICK,onYesBtnHandler);
 			_NoBtn.addEventListener(JISButton.BUTTON_CLICK,onNoBtnHandler);
-			showForText(text,_completeHandler);
+			if(text != null) showForText(text,_completeHandler);
 		}
 		
 		public function showForText(text:String,completeHandler:Function):void

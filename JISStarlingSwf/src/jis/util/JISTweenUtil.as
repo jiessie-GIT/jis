@@ -92,7 +92,7 @@ package jis.util
 			for each(var infos:Array in tweenList)
 			{
 				var tween:Tween = Starling.juggler.removeTweens(infos[0]);
-				if(tween && tween.onComplete)
+				if(tween && tween.onComplete != null)
 				{
 					if(tween.onComplete.length == 1) tween.onComplete.call(null,true);
 					else tween.onComplete.apply(null,tween.onCompleteArgs);

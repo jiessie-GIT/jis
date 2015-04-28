@@ -44,11 +44,11 @@ package jis.ui.component
 		/** 如果指定了该值，表格将会忽略实际内容大小，进行换列 */
 		private var preferredHeight:Number = 0;
 		/** 当前选中的单元格 */
-		private var currSelect:JISITableCell;
+		protected var currSelect:JISITableCell;
 		/** 是否允许重复选中，如果不是，则选中相同的一个的话相当于取消选中 */
 		private var allowRepeatSelect:Boolean = true;
 		/** 选中回调 */
-		private var _selectHandler:Function;
+		protected var _selectHandler:Function;
 		/** 最大单元格，如果超出的话，则会删除第一个然后加入 */
 		private var maxCell:int = -1;
 		
@@ -210,6 +210,7 @@ package jis.ui.component
 			
 			for(var i:int=0;i<tabbedCellList.length;i++)
 			{
+				var cell:JISITableCell = tabbedCellList[i] is JISITableCell ? tabbedCellList[i]:null;
 				var display:DisplayObject = tabbedCellList[i] is JISITableCell ? tabbedCellList[i].getDisplay():tabbedCellList[i];
 				if(isRow)
 				{
@@ -217,14 +218,14 @@ package jis.ui.component
 					var newColSpace:int = currIndex*colSpace;
 					display.y = currY;
 					display.x = currWidth;//currIndex*getDisplayWidth(display)+newColSpace;
-					currWidth += getDisplayWidth(display)+colSpace;
+					currWidth += getDisplayWidth(display,cell)+colSpace;
 				}else
 				{
 					//竖向排列
 					var newRowSpace:int = currIndex*rowSpace;
 					display.x = currX;
 					display.y = currHeight;//currIndex*getDisplayHeight(display)+newRowSpace;
-					currHeight += getDisplayHeight(display)+rowSpace;
+					currHeight += getDisplayHeight(display,cell)+rowSpace;
 				}
 				currIndex++;
 				//不是最后一个
@@ -232,17 +233,17 @@ package jis.ui.component
 				{
 					var nextDisplay:DisplayObject = tabbedCellList[i+1] is JISITableCell ? tabbedCellList[i+1].getDisplay():tabbedCellList[i+1];
 					//换行显示
-					if(isRow && hasNewLine(currWidth+getDisplayWidth(nextDisplay)+rowSpace))
+					if(isRow && hasNewLine(currWidth+getDisplayWidth(nextDisplay,cell)+rowSpace))
 					{
-						currY += getDisplayHeight(display)+colSpace;
+						currY += getDisplayHeight(display,cell)+colSpace;
 						currIndex = 0;
 						
 						currWidth = 0;
 					}
 					//换列显示
-					if(!isRow && hasNewCol(currHeight+getDisplayHeight(nextDisplay)+colSpace))
+					if(!isRow && hasNewCol(currHeight+getDisplayHeight(nextDisplay,cell)+colSpace))
 					{
-						currX += getDisplayWidth(display)+rowSpace;
+						currX += getDisplayWidth(display,cell)+rowSpace;
 						currIndex = 0;
 						currHeight = 0;
 					}
@@ -372,13 +373,13 @@ package jis.ui.component
 		}
 		
 		/**获取显示对象的宽度*/
-		protected function getDisplayWidth(display:DisplayObject):Number
+		protected function getDisplayWidth(display:DisplayObject,cell:JISITableCell = null):Number
 		{
 			return cellPreferredWidth == 0 ? display.width:cellPreferredWidth;
 		}
 		
 		/**获取显示对象的高度*/
-		protected function getDisplayHeight(display:DisplayObject):Number
+		protected function getDisplayHeight(display:DisplayObject,cell:JISITableCell = null):Number
 		{
 			return cellPreferredHeight == 0 ? display.height:cellPreferredHeight;
 		}
